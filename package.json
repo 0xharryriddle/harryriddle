@@ -9,29 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.9.0",
-    "@radix-ui/react-dialog": "^1.1.2",
-    "@radix-ui/react-icons": "^1.3.0",
-    "@radix-ui/react-label": "^2.1.0",
-    "@radix-ui/react-slot": "^1.1.0",
-    "@radix-ui/react-tabs": "^1.1.1",
-    "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.11.9",
+    "geist": "^1.7.0",
     "lucide-react": "^0.453.0",
     "next": "14.2.15",
-    "next-themes": "^0.3.0",
+    "next-mdx-remote": "^4.4.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.53.1",
-    "react-icons": "^5.3.0",
-    "rehype-katex": "^7.0.1",
-    "rehype-starry-night": "^2.2.0",
-    "remark-math": "^6.0.0",
-    "shiki": "^1.24.0",
-    "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
+    "sugar-high": "^0.6.1",
+    "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",
@@ -41,11 +27,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
     "postcss": "^8",
-    "rehype-autolink-headings": "^7.1.0",
-    "rehype-pretty-code": "^0.14.0",
-    "rehype-slug": "^6.0.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5",
-    "velite": "^0.2.0"
+    "typescript": "^5"
   }
 }

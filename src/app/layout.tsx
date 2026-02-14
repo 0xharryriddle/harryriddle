@@ -1,47 +1,55 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { Navbar } from "@/components/navbar";
+import Footer from "@/components/footer";
 
-// components
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { ThemeProvider } from "@/providers/ThemeProvider";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
-const inter = Inter({ subsets: ["latin"] });
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://0xharryriddle.dev";
 
 export const metadata: Metadata = {
-  title: "Harry Nguyen",
-  description: "This is Harry's portfolio",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "0xharryriddle",
+    template: "%s | 0xharryriddle",
+  },
+  description: "Software Engineer & Blockchain Developer",
+  openGraph: {
+    title: "0xharryriddle",
+    description: "Software Engineer & Blockchain Developer",
+    url: baseUrl,
+    siteName: "0xharryriddle",
+    locale: "en_US",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className="scroll-pt-[3.5rem]" suppressHydrationWarning>
-      <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossOrigin="anonymous"></link>
-      </head>
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light">
-          <Header />
-          {children}
-          <Footer />
-        </ThemeProvider>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="antialiased">
+        <Navbar />
+        <main className="pt-16 min-h-screen">
+          <div className="max-w-3xl mx-auto px-6 animate-fade-in">
+            {children}
+          </div>
+        </main>
+        <Footer />
       </body>
     </html>
   );
