@@ -125,7 +125,7 @@ export default function CompaniesFilter({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-mono text-neutral-400 dark:text-neutral-500 shrink-0">
-                      {company.period}
+                      {company.startDate} — {company.endDate || "Present"}
                     </span>
                     {company.endDate === null && (
                       <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20">
