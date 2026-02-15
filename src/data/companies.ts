@@ -1,7 +1,6 @@
 export interface Company {
   name: string;
   role: string;
-  period: string;
   startDate: string;
   endDate: string | null; // null means current
   description: string;
@@ -11,11 +10,20 @@ export interface Company {
 
 export const companies: Company[] = [
   {
+    name: "Sense ERP",
+    role: "Junior Fullstack Developer",
+    startDate: "2025-03-01",
+    endDate: null,
+    description:
+      "Developed and maintained fullstack applications using C# with ASP.NET Core and Flutter for mobile. Collaborated with cross-functional teams to deliver scalable solutions.",
+    url: "https://www.senseerp.com/",
+    logo: "/SenseERP.svg",
+  },
+  {
     name: "University of Information Technology (UIT)",
     role: "Software Engineering Student",
-    period: "Aug 2021 — Present",
     startDate: "2021-08-01",
-    endDate: null,
+    endDate: "2025-11-30",
     description:
       "Studying Software Engineering with a focus on Web3 and Blockchain technologies. Building knowledge in distributed systems and decentralized applications.",
     url: "https://www.uit.edu.vn/",
@@ -24,7 +32,6 @@ export const companies: Company[] = [
   {
     name: "LearnWeb3",
     role: "Blockchain Developer Student",
-    period: "Jun 2023 — Present",
     startDate: "2023-06-01",
     endDate: null,
     description:
@@ -32,5 +39,4 @@ export const companies: Company[] = [
     url: "https://learnweb3.io/",
     logo: "/Learnweb3.png",
   },
-  // Add more companies here with endDate: 'YYYY-MM-DD' for past companies
 ];

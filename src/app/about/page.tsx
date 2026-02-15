@@ -1,4 +1,6 @@
 import { MacWindow } from "@/components/mac-window";
+import { companies } from "@/data/companies";
+import { techStack } from "@/data/techStacks";
 import Image from "next/image";
 
 export const metadata = {
@@ -7,34 +9,24 @@ export const metadata = {
     "About 0xharryriddle - Software Engineer & Blockchain Developer.",
 };
 
-const timelineData = [
-  {
-    company: "University of Information Technology (UIT)",
-    position: "Software Engineering Student",
-    period: "Aug 2021 — Present",
-    description:
-      "Studying Software Engineering with a focus on Web3 and Blockchain technologies. Building knowledge in distributed systems and decentralized applications.",
-    url: "https://www.uit.edu.vn/",
-  },
-  {
-    company: "LearnWeb3",
-    position: "Blockchain Developer Student",
-    period: "Jun 2023 — Present",
-    description:
-      "Learning and building in the Web3 space. Exploring smart contract development, DeFi protocols, and decentralized application architecture.",
-    url: "https://learnweb3.io/",
-  },
-];
-
-const techStack = [
-  {
-    category: "Languages",
-    items: ["TypeScript", "Rust", "Solidity", "Python", "Move"],
-  },
-  { category: "Frontend", items: ["React", "Next.js", "Tailwind CSS"] },
-  { category: "Blockchain", items: ["Ethereum", "Polkadot", "Substrate"] },
-  { category: "Tools", items: ["Git", "Docker", "Linux", "VS Code"] },
-];
+// const timelineData = [
+//   {
+//     company: "University of Information Technology (UIT)",
+//     position: "Software Engineering Student",
+//     period: "Aug 2021 — Present",
+//     description:
+//       "Studying Software Engineering with a focus on Web3 and Blockchain technologies. Building knowledge in distributed systems and decentralized applications.",
+//     url: "https://www.uit.edu.vn/",
+//   },
+//   {
+//     company: "LearnWeb3",
+//     position: "Blockchain Developer Student",
+//     period: "Jun 2023 — Present",
+//     description:
+//       "Learning and building in the Web3 space. Exploring smart contract development, DeFi protocols, and decentralized application architecture.",
+//     url: "https://learnweb3.io/",
+//   },
+// ];
 
 export default function AboutPage() {
   return (
@@ -43,8 +35,13 @@ export default function AboutPage() {
       <MacWindow title="~/about">
         <div className="flex flex-col sm:flex-row gap-6 items-start">
           <div className="shrink-0">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-neutral-200 to-neutral-300 dark:from-neutral-700 dark:to-neutral-800 flex items-center justify-center overflow-hidden">
-              <span className="text-3xl">👾</span>
+            <div className="relative w-20 h-20 rounded-2xl bg-gradient-to-br from-neutral-200 to-neutral-300 dark:from-neutral-700 dark:to-neutral-800 flex items-center justify-center overflow-hidden">
+              <Image
+                src={"/0xharryriddle.jpg"}
+                alt={"Harry Riddle"}
+                className="object-cover"
+                fill
+              />
             </div>
           </div>
           <div className="space-y-3">
@@ -101,7 +98,7 @@ export default function AboutPage() {
       <MacWindow title="~/timeline">
         <h2 className="text-lg font-semibold tracking-tight mb-5">Timeline</h2>
         <div className="space-y-6">
-          {timelineData.map((item, index) => (
+          {companies.map((item, index) => (
             <a
               key={index}
               href={item.url}
@@ -113,7 +110,7 @@ export default function AboutPage() {
                 {/* Timeline line */}
                 <div className="flex flex-col items-center pt-1.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-neutral-300 dark:bg-neutral-600 group-hover:bg-neutral-500 dark:group-hover:bg-neutral-400 transition-colors" />
-                  {index < timelineData.length - 1 && (
+                  {index < companies.length - 1 && (
                     <div className="w-px flex-1 bg-neutral-200 dark:bg-neutral-700 mt-2" />
                   )}
                 </div>
@@ -122,14 +119,14 @@ export default function AboutPage() {
                 <div className="pb-6 flex-1">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1">
                     <h3 className="font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-600 dark:group-hover:text-neutral-300 transition-colors">
-                      {item.company}
+                      {item.name}
                     </h3>
                     <span className="text-xs font-mono text-neutral-400 dark:text-neutral-500">
-                      {item.period}
+                      {item.startDate} — {item.endDate || "Present"}
                     </span>
                   </div>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-1.5">
-                    {item.position}
+                    {item.role}
                   </p>
                   <p className="text-sm text-neutral-500 dark:text-neutral-500 leading-relaxed">
                     {item.description}

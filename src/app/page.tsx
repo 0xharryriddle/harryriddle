@@ -13,10 +13,10 @@ export default function Home() {
             <span className="inline-block animate-bounce">✌️</span>
           </h1>
           <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-xl">
-            Software Engineer & Blockchain Developer. I&apos;m passionate about
-            Web3, decentralized systems, and building tools that matter.
-            Currently exploring the intersection of software engineering and
-            blockchain technology.
+            Blockchain Researcher & Engineer. I&apos;m passionate about Web3,
+            decentralized systems, and building tools that matter. Currently
+            exploring the intersection of software engineering and blockchain
+            technology.
           </p>
           <div className="flex items-center gap-4 pt-2">
             <Link

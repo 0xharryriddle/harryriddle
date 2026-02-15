@@ -10,13 +10,13 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://0xharryriddle.dev";
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "0xharryriddle",
+    default: "Nguyen Thai Cong | Blockchain Researcher & Engineer",
     template: "%s | 0xharryriddle",
   },
-  description: "Software Engineer & Blockchain Developer",
+  description: "Blockchain Researcher & Engineer",
   openGraph: {
     title: "0xharryriddle",
-    description: "Software Engineer & Blockchain Developer",
+    description: "Blockchain Researcher & Engineer",
     url: baseUrl,
     siteName: "0xharryriddle",
     locale: "en_US",
