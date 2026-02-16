@@ -1,0 +1,74 @@
+---
+title: 'Getting Started with Polkadot.js API'
+publishedAt: '2026-02-15'
+summary: 'Learn how to connect to a Polkadot node, query chain state, and submit transactions using the Polkadot.js API in a TypeScript project.'
+difficulty: beginner
+duration: '25 min'
+tags: [Polkadot, TypeScript, Polkadot.js]
+status: published
+---
+
+## Introduction
+
+The Polkadot.js API is the primary JavaScript/TypeScript library for interacting with Substrate-based blockchains. In this tutorial, you'll learn the fundamentals of connecting to a node and performing basic queries.
+
+## Prerequisites
+
+- Node.js v18+ installed
+- Basic TypeScript knowledge
+- A code editor (VS Code recommended)
+
+## Step 1: Project Setup
+
+Create a new project and install the required dependencies:
+
+```bash
+mkdir polkadot-js-starter && cd polkadot-js-starter
+npm init -y
+npm install @polkadot/api typescript ts-node
+npx tsc --init
+```
+
+## Step 2: Connect to a Node
+
+Create a file `src/index.ts`:
+
+```typescript
+import { ApiPromise, WsProvider } from '@polkadot/api';
+
+async function main() {
+  // Connect to the Polkadot mainnet
+  const provider = new WsProvider('wss://rpc.polkadot.io');
+  const api = await ApiPromise.create({ provider });
+
+  // Retrieve chain info
+  const chain = await api.rpc.system.chain();
+  const lastHeader = await api.rpc.chain.getHeader();
+
+  console.log(`Connected to ${chain}`);
+  console.log(`Latest block: #${lastHeader.number}`);
+
+  await api.disconnect();
+}
+
+main().catch(console.error);
+```
+
+## Step 3: Query Chain State
+
+```typescript
+// Get account balance
+const { data: { free } } = await api.query.system.account('5GrwvaEF...');
+console.log(`Balance: ${free.toHuman()}`);
+
+// Subscribe to new blocks
+const unsub = await api.rpc.chain.subscribeNewHeads((header) => {
+  console.log(`New block #${header.number}`);
+});
+```
+
+## Next Steps
+
+- Explore the [Polkadot.js documentation](https://polkadot.js.org/docs/)
+- Try connecting to a local Substrate node
+- Learn about submitting extrinsics (transactions)
