@@ -1,0 +1,86 @@
+---
+title: 'Building a Custom Substrate Pallet'
+publishedAt: '2026-02-10'
+summary: 'A comprehensive guide to creating a custom pallet for Substrate-based blockchains using Rust and the FRAME framework.'
+difficulty: intermediate
+duration: '45 min'
+tags: [Substrate, Rust, FRAME, Polkadot]
+status: published
+---
+
+## Introduction
+
+Substrate's modular architecture is built around **pallets** — pluggable runtime modules that define blockchain logic. In this tutorial, you'll build a custom pallet from scratch using the FRAME framework.
+
+## Prerequisites
+
+- Rust toolchain installed (`rustup`)
+- Basic Rust knowledge
+- Familiarity with blockchain concepts
+- Substrate node template cloned
+
+## Step 1: Scaffold the Pallet
+
+Inside your Substrate node's `pallets/` directory:
+
+```bash
+mkdir my-pallet && cd my-pallet
+cargo init --lib
+```
+
+Update `Cargo.toml`:
+
+```toml
+[dependencies]
+frame-support = { default-features = false, version = "4.0.0-dev" }
+frame-system = { default-features = false, version = "4.0.0-dev" }
+```
+
+## Step 2: Define the Pallet Config
+
+```rust
+#[frame_support::pallet]
+pub mod pallet {
+    use frame_support::pallet_prelude::*;
+    use frame_system::pallet_prelude::*;
+
+    #[pallet::config]
+    pub trait Config: frame_system::Config {
+        type RuntimeEvent: From<Event<Self>>
+            + IsType<<Self as frame_system::Config>::RuntimeEvent>;
+    }
+
+    #[pallet::pallet]
+    pub struct Pallet<T>(_);
+
+    #[pallet::storage]
+    pub type Something<T> = StorageValue<_, u32>;
+
+    #[pallet::event]
+    #[pallet::generate_deposit(pub(super) fn deposit_event)]
+    pub enum Event<T: Config> {
+        SomethingStored { value: u32, who: T::AccountId },
+    }
+
+    #[pallet::call]
+    impl<T: Config> Pallet<T> {
+        #[pallet::weight(10_000)]
+        pub fn do_something(origin: OriginFor<T>, value: u32) -> DispatchResult {
+            let who = ensure_signed(origin)?;
+            Something::<T>::put(value);
+            Self::deposit_event(Event::SomethingStored { value, who });
+            Ok(())
+        }
+    }
+}
+```
+
+## Step 3: Add to Runtime
+
+Register your pallet in the runtime's `construct_runtime!` macro and implement the config trait.
+
+## Next Steps
+
+- Add more complex storage types (maps, double maps)
+- Write unit tests for your pallet
+- Explore benchmarking framework
