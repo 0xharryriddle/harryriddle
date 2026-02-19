@@ -1,4 +1,5 @@
 export interface Company {
+  id: number;
   name: string;
   role: string;
   startDate: string;
@@ -10,6 +11,7 @@ export interface Company {
 
 export const companies: Company[] = [
   {
+    id: 1,
     name: "Sense ERP",
     role: "Junior Fullstack Developer",
     startDate: "2025-03-01",
@@ -20,6 +22,7 @@ export const companies: Company[] = [
     logo: "/SenseERP.svg",
   },
   {
+    id: 2,
     name: "University of Information Technology (UIT)",
     role: "Software Engineering Student",
     startDate: "2021-08-01",
@@ -30,6 +33,7 @@ export const companies: Company[] = [
     logo: "/Logo_UIT_updated.ico",
   },
   {
+    id: 3,
     name: "LearnWeb3",
     role: "Blockchain Developer Student",
     startDate: "2023-06-01",
