@@ -37,6 +37,7 @@ export default function CompaniesFilter({
                 : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800"
             }
           `}
+          type="button"
         >
           All
           <span className="ml-1.5 text-xs opacity-60">
@@ -53,6 +54,7 @@ export default function CompaniesFilter({
                 : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800"
             }
           `}
+          type="button"
         >
           Current
           <span className="ml-1.5 text-xs opacity-60">
@@ -69,6 +71,7 @@ export default function CompaniesFilter({
                 : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800"
             }
           `}
+          type="button"
         >
           Past
           <span className="ml-1.5 text-xs opacity-60">
@@ -81,7 +84,7 @@ export default function CompaniesFilter({
       <div className="space-y-6">
         {displayedCompanies.map((company, index) => (
           <a
-            key={index}
+            key={company.id}
             href={company.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -116,7 +119,7 @@ export default function CompaniesFilter({
               <div className="flex-1 pb-6">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
                   <div>
-                    <h3 className="font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-600 dark:group-hover:text-neutral-300 transition-colors">
+                    <h3 className="font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {company.name}
                     </h3>
                     <p className="text-sm text-neutral-500 dark:text-neutral-400">
