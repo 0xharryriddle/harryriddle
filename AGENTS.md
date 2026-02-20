@@ -4,6 +4,25 @@
 > Read it fully before making any changes. Update it whenever you add new routes,
 > components, data shapes, or conventions.
 
+> **Token Efficiency** — Before acting, jump to [§ 0 Token Efficiency](#0-token-efficiency)
+> and internalize those rules. They apply for the entire session.
+
+---
+
+## 0. Token Efficiency
+
+These rules apply for **every interaction** with this codebase. Follow them without exception.
+
+- **Never re-read files you just wrote or edited.** You already know the contents.
+- **Never re-run commands to "verify" unless the outcome was uncertain.** A clean `npm run build` is enough; do not run it twice.
+- **Don't echo back large blocks of code or file contents unless explicitly asked.** Summarise the change, not the result.
+- **Batch related edits into single operations.** If 5 files need changes, edit all 5 before running the build — not one at a time.
+- **Skip filler phrases** like "I'll now…", "Let me…", "Sure!", "Certainly!", or "I've completed…". Act immediately.
+- **If a task needs 1 tool call, don't use 3.** Plan the full approach before making any call.
+- **Do not summarise what you just did** unless the result is ambiguous or you need input to continue.
+- **Prefer targeted edits over full-file rewrites.** Replace only the lines that change.
+- **Ask at most one clarifying question at a time**, and only when the answer would materially change the approach.
+
 ---
 
 ## 1. Project Identity
@@ -577,4 +596,4 @@ The RSS feed is at `/rss` and linked in the footer.
 
 ---
 
-*Last updated: after implementing blog tags, pinned repos, resume page, X social link, code block scroll fix, and anchor heading colour fix.*
+*Last updated: added § 0 Token Efficiency; blog tags & filtering; pinned repos with star/fork counts; resume Coming Soon page; X (Twitter) social links; code block horizontal scroll fix; heading anchor colour fix; `formatDate` moved to `@/lib/utils`; company dates formatted as `Mon YYYY`; comprehensive AGENTS.md.*
