@@ -50,7 +50,6 @@ Finally, Smoldot verifies the **consensus** and the finality by tracking consecu
 In order to start syncing with a chain, the Smoldot requires the list of information called **[chainspec](https://github.com/paritytech/smoldot/blob/76994b52cd658a4ac1dc7a08f6bd4eba702e0e87/src/chain_spec.rs#L18-L34)**. A chain specification is the description of everything related the chain being desired connected and required for the client to successfully interact with that chain. The chainspec only consists of **[clientspec](https://github.com/paritytech/smoldot/blob/main/src/chain_spec/structs.rs#L33)** that look like as the following structure:
 
 ```rs showLineNumbers
-...
 #[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "camelCase")]
 #[serde(deny_unknown_fields)]
@@ -85,7 +84,7 @@ pub(super) struct ClientSpec {
     #[serde(flatten)]
     pub(super) parachain: Option<ChainSpecParachain>,
 }
-...
+
 ```
 
 From the chainspec, the **[chain information](https://github.com/Daanvdplas/smoldot/blob/76994b52cd658a4ac1dc7a08f6bd4eba702e0e87/src/chain/chain_information.rs#L118-L129)** is built. As we can see in the code, the chain information is all the crucial information Smoldot requires to verify the consensus and finality <span className="font-bold reference">[7]</span>. It will be constructed from either:
