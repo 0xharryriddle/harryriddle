@@ -4,6 +4,11 @@ import { useState } from "react";
 import Image from "next/image";
 import type { Company } from "@/data/companies";
 
+function formatCompanyDate(dateStr: string): string {
+  const date = new Date(dateStr + "T00:00:00");
+  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
 type FilterType = "all" | "current" | "past";
 
 export default function CompaniesFilter({
@@ -128,7 +133,10 @@ export default function CompaniesFilter({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-mono text-neutral-400 dark:text-neutral-500 shrink-0">
-                      {company.startDate} — {company.endDate || "Present"}
+                      {formatCompanyDate(company.startDate)} —{" "}
+                      {company.endDate
+                        ? formatCompanyDate(company.endDate)
+                        : "Present"}
                     </span>
                     {company.endDate === null && (
                       <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20">

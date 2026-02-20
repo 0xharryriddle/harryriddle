@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { CustomMDX } from "@/components/mdx";
 import { formatDate, getBlogPosts } from "@/app/blog/utils";
 import { MacWindow } from "@/components/mac-window";
+import Link from "next/link";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://0xharryriddle.dev";
 
@@ -83,14 +84,65 @@ export default function Blog({ params }: { params: { slug: string } }) {
       />
 
       <MacWindow title={`~/blog/${post.slug}`}>
-        <h1 className="title font-semibold text-2xl tracking-tight mb-1">
+        {/* Back link */}
+        <Link
+          href="/blog"
+          className="
+            inline-flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-400
+            hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors mb-6
+          "
+        >
+          <svg
+            className="w-3.5 h-3.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          Back to blog
+        </Link>
+
+        {/* Title */}
+        <h1 className="title font-semibold text-2xl tracking-tight mb-2">
           {post.metadata.title}
         </h1>
-        <div className="flex justify-between items-center mt-2 mb-8 text-sm">
+
+        {/* Meta row: date */}
+        <div className="flex flex-wrap items-center gap-3 mt-2 mb-4 text-sm">
           <p className="text-neutral-500 dark:text-neutral-400">
             {formatDate(post.metadata.publishedAt)}
           </p>
         </div>
+
+        {/* Tags */}
+        {post.metadata.tags && post.metadata.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-8">
+            {post.metadata.tags.map((tag) => (
+              <Link
+                key={tag}
+                href={`/blog?tag=${encodeURIComponent(tag)}`}
+                className="
+                  px-2.5 py-1 text-xs font-medium rounded-full
+                  bg-neutral-100 dark:bg-neutral-800
+                  text-neutral-600 dark:text-neutral-400
+                  border border-neutral-200/60 dark:border-neutral-700/40
+                  hover:bg-neutral-200 dark:hover:bg-neutral-700
+                  transition-colors
+                "
+              >
+                {tag}
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {/* Article body */}
         <article className="prose max-w-none">
           <CustomMDX source={post.content} />
         </article>

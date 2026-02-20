@@ -1,5 +1,6 @@
-import { BlogPosts } from "@/components/posts";
 import { MacWindow } from "@/components/mac-window";
+import BlogPostsFilter from "@/components/blog-posts-filter";
+import { getBlogPosts } from "@/app/blog/utils";
 
 export const metadata = {
   title: "Blog",
@@ -7,6 +8,8 @@ export const metadata = {
 };
 
 export default function BlogPage() {
+  const posts = getBlogPosts();
+
   return (
     <section className="py-12">
       <MacWindow title="~/blog">
@@ -14,7 +17,7 @@ export default function BlogPage() {
         <p className="text-neutral-500 dark:text-neutral-400 mb-8 text-sm">
           Thoughts on blockchain, software engineering, and the web.
         </p>
-        <BlogPosts />
+        <BlogPostsFilter posts={posts} />
       </MacWindow>
     </section>
   );
