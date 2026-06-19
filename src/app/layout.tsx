@@ -44,7 +44,7 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body className="antialiased">
         <Navbar />
-        <main className="pt-16 min-h-screen">
+        <main className="pt-20 pb-16 min-h-screen">
           <div className="max-w-3xl mx-auto px-6 animate-fade-in">
             {children}
           </div>

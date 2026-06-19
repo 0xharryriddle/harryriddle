@@ -1,4 +1,4 @@
-import { MacWindow } from "@/components/mac-window";
+import { BlogPosts } from "@/components/posts";
 import BlogPostsFilter from "@/components/blog-posts-filter";
 import { getBlogPosts } from "@/app/blog/utils";
 
@@ -11,14 +11,19 @@ export default function BlogPage() {
   const posts = getBlogPosts();
 
   return (
-    <section className="py-12">
-      <MacWindow title="~/blog">
-        <h1 className="font-semibold text-2xl mb-2 tracking-tight">Blog</h1>
-        <p className="text-neutral-500 dark:text-neutral-400 mb-8 text-sm">
-          Thoughts on blockchain, software engineering, and the web.
+    <section className="py-8">
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight text-[var(--text-primary)] mb-3">
+          Blog
+        </h1>
+        <p className="text-[var(--text-secondary)] leading-relaxed max-w-2xl">
+          Writing about blockchain infrastructure, light clients, Web3
+          development, and the things I&apos;m building and learning. Some of
+          these posts are deeply technical; others are just interesting things
+          I came across.
         </p>
-        <BlogPostsFilter posts={posts} />
-      </MacWindow>
+      </div>
+      <BlogPostsFilter posts={posts} />
     </section>
   );
 }
