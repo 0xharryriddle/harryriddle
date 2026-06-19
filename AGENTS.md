@@ -39,7 +39,7 @@ These rules apply for **every interaction** with this codebase. Follow them with
 
 This is a **personal portfolio website** — not a SaaS product, not a blog platform.
 Every feature should reinforce the owner's professional identity as a serious
-blockchain engineer. Prefer depth over breadth; quality over quantity.
+blockchain researcher & engineer. Prefer depth over breadth; quality over quantity.
 
 ---
 
@@ -49,11 +49,12 @@ blockchain engineer. Prefer depth over breadth; quality over quantity.
 |---|---|
 | Framework | Next.js 14 (App Router) |
 | Language | TypeScript 5 (`strict: true`) |
-| Styling | Tailwind CSS 3 + custom CSS variables in `globals.css` |
+| Styling | Tailwind CSS 3 + CSS custom properties in `globals.css` |
 | Fonts | Geist Sans (`--font-geist-sans`) · Geist Mono (`--font-geist-mono`) |
 | MDX | `next-mdx-remote` (RSC mode) + `sugar-high` for syntax highlighting |
 | Linter / Formatter | Biome 2 (`biome.json`) — **not ESLint, not Prettier** |
 | Package manager | npm (use `npm` for all commands; `pnpm-lock.yaml` also exists but npm is canonical) |
+| Icons | `lucide-react` |
 | Deployment | Vercel (implied by `NEXT_PUBLIC_BASE_URL` env var) |
 
 ### Runtime environment
@@ -91,32 +92,35 @@ harryriddle/
 │   │   │   │   └── [slug]/   # /community/tutorials/:slug
 │   │   │   ├── page.tsx      # /community  — tutorial list + coming-soon sections
 │   │   │   └── utils.ts      # getTutorials(), TutorialMetadata type
-│   │   ├── companies/        # /companies — work & education timeline with filter tabs
+│   │   ├── companies/        # /companies — redirects to /experience
+│   │   ├── experience/       # /experience — work & education timeline
 │   │   ├── og/               # /og?title=... — dynamic Open Graph image (ImageResponse)
 │   │   ├── projects/         # /projects — GitHub repos grid
-│   │   ├── resume/           # /resume — coming-soon PDF placeholder
+│   │   ├── research/         # /research — publications, papers, research interests
+│   │   ├── resume/           # /resume — coming-soon PDF placeholder with stats
 │   │   ├── rss/              # /rss — RSS 2.0 feed of blog posts
 │   │   ├── fonts/            # Local font assets (Geist)
 │   │   ├── favicon.ico
-│   │   ├── globals.css       # Global styles, CSS variables, prose/code block styles
+│   │   ├── globals.css       # Global styles, CSS custom properties, prose/code block styles
 │   │   ├── layout.tsx        # Root layout: Navbar + main + Footer
 │   │   ├── not-found.tsx     # 404 page
-│   │   ├── page.tsx          # / — hero + recent blog posts
+│   │   ├── page.tsx          # / — hero + dual Research/Engineering toggle + recent posts
 │   │   ├── robots.ts         # Generates /robots.txt
 │   │   └── sitemap.ts        # Generates /sitemap.xml
 │   ├── components/           # Shared React components
 │   │   ├── blog-posts-filter.tsx  # "use client" — tag chips + filtered post list
-│   │   ├── companies-filter.tsx   # "use client" — all/current/past filter tabs
-│   │   ├── footer.tsx             # Site footer with GitHub, X, RSS links
-│   │   ├── mac-window.tsx         # MacWindow, MacWindowInline, TrafficLights
+│   │   ├── dual-view.tsx          # "use client" — Research/Engineering toggle for homepage
+│   │   ├── footer.tsx             # Site footer with GitHub, X, Google Scholar, RSS links
 │   │   ├── mdx.tsx                # CustomMDX wrapper + all MDX component overrides
-│   │   ├── navbar.tsx             # "use client" — top navigation bar
+│   │   ├── navbar.tsx             # "use client" — top navigation bar (Home, Research, Experience, Projects, Blog)
 │   │   ├── posts.tsx              # BlogPosts server component (homepage usage)
 │   │   ├── project-card.tsx       # ProjectCard + ProjectCardSkeleton
 │   │   ├── projects-grid.tsx      # "use client" — fetches GitHub repos + renders grid
 │   │   └── tutorial-list.tsx      # TutorialList + DifficultyBadge + StatusIndicator
 │   ├── data/                 # Static configuration / seed data
 │   │   ├── companies.ts      # Work experience + education timeline entries
+│   │   ├── education.ts       # Education entries for research page (same pattern as companies)
+│   │   ├── papers.ts          # Publications & research interests (ready-to-fill)
 │   │   ├── pinnedRepos.ts    # List of GitHub repo names to highlight in /projects
 │   │   └── techStacks.ts     # Tech stack categories shown on /about
 │   └── lib/
@@ -131,31 +135,33 @@ harryriddle/
 
 ## 4. Design System
 
-### Theme — macOS Inspired
+### Theme — Clean Professional
 
-The site mimics macOS window chrome throughout. Every major section lives inside a
-`<MacWindow>` card with:
-- Three traffic-light dots (red #ff5f57, yellow #febc2e, green #28c840)
-- A title bar with a centered `~/path` label in monospace
-- White/glass background in light mode, dark glass in dark mode
+The site uses a minimal, content-first professional design inspired by academic
+and engineering portfolios. No macOS window chrome.
 
-**Never** place raw content outside a `<MacWindow>` without an explicit reason.
+- Clean white/light backgrounds with subtle blue accent (#2563eb light, #3b82f6 dark)
+- Rounded cards with light borders and subtle shadows for grouping content
+- Content sits in a single-column centered layout (`max-w-3xl`)
+- Consistent spacing and typography hierarchy
 
-### CSS Variables (defined in `globals.css` `:root`)
+### CSS Custom Properties (defined in `globals.css` `:root`)
 
 ```css
---mac-bg          /* page background */
---mac-window      /* card background */
---mac-nav         /* navbar background */
---mac-text        /* primary text */
---mac-text-secondary
---mac-accent      /* #0071e3 light / #2997ff dark — links, highlights, CTAs */
---mac-border
---mac-shadow
---mac-red / --mac-yellow / --mac-green   /* traffic lights */
+--bg-primary       /* page background (#fafafa light / #0a0a0a dark) */
+--bg-secondary     /* card background (#ffffff light / #111111 dark) */
+--text-primary     /* primary text (#111827 / #f9fafb) */
+--text-secondary   /* secondary/muted text */
+--text-muted       /* subtle text for dates, counts */
+--accent           /* #2563eb light / #3b82f6 dark — links, buttons, highlights */
+--accent-light     /* tinted version for tag backgrounds */
+--accent-hover     /* hover state for accent */
+--border           /* card/list borders */
+--card-bg          /* card background */
+--card-shadow      /* card box-shadow */
 ```
 
-Use `var(--mac-accent)` for interactive elements instead of hardcoded blue values.
+Use `var(--accent)` for interactive elements — never hardcode blue values.
 
 ### Dark Mode
 
@@ -174,26 +180,22 @@ Tailwind dark mode is set to `"media"` in `tailwind.config.ts`.
 
 - Page entrance: `animate-fade-in` (0.5s ease-out fade + 8px Y slide)
 - Applied on the `<main>` wrapper in `layout.tsx`
-- Window hover: `transition: transform 0.2s ease, box-shadow 0.2s ease` on `.mac-window`
+- Dual View toggle: CSS `opacity` + `translateY` transition (0.4s ease-out)
 
 ---
 
 ## 5. Core Components Reference
 
-### `<MacWindow>` (`src/components/mac-window.tsx`)
+### `<DualViewSection>` (`src/components/dual-view.tsx`) — client component
 
-```tsx
-<MacWindow
-  title="~/path"          // monospace label centred in title bar
-  variant="default"       // "default" | "terminal" (dark bg, green text)
-  noPadding={false}       // skip the p-6 content padding
-  className=""            // extra classes on root div
->
-  {children}
-</MacWindow>
-```
+The homepage hero toggle that switches between Research and Engineering views with
+a smooth CSS transition. Contains two sub-components:
 
-Use `<MacWindowInline>` for cards inside a grid (no title bar, no traffic lights).
+- **ResearchContent**: shows research interests, academic background, link to /research
+- **EngineeringContent**: shows current role, tech stack, links to /experience and /projects
+
+The toggle uses two pill buttons. Content within the active view fades/slides in.
+Both views share a `min-h-[320px]` container for layout stability.
 
 ### `<CustomMDX>` (`src/components/mdx.tsx`)
 
@@ -204,25 +206,22 @@ Wraps `MDXRemote` from `next-mdx-remote/rsc`. Registered component overrides:
 | `h1`–`h6` | `createHeading(n)` | Adds anchor link `#slug` on hover |
 | `a` | `CustomLink` | Internal `/` links → Next `<Link>`, external → `target="_blank"` |
 | `code` | `Code` | `sugar-high` syntax highlighting via `dangerouslySetInnerHTML` |
-| `pre` | `Pre` | macOS window chrome header + inner scroll div for horizontal overflow |
+| `pre` | `Pre` | Code block with macOS-style chrome header + inner scroll div |
 | `Image` | `RoundedImage` | Next.js `<Image>` with `rounded-lg` |
 | `Table` | `Table` | Structured data table |
 | `Callout` | `Callout` | `type="info|warning|danger|success"` — coloured alert box |
 
-**Important**: The `<Pre>` component renders the traffic-lights header as real DOM
-nodes (not `::before`). The inner `<div style={{ overflowX: 'auto' }}>` is the
-horizontal scroll container. Never revert to the `::before` approach — it breaks
-horizontal scroll.
+The `<Pre>` component renders a traffic-lights header as real DOM nodes and wraps
+code in a horizontal-scroll div. Never revert this to CSS `::before` — it breaks
+scroll.
 
 ### `BlogPosts` vs `BlogPostsFilter`
 
 - `BlogPosts` (`posts.tsx`) — **server component**, calls `getBlogPosts()` directly,
-  used on the homepage (`/`) with a `limit` prop. No tag filtering.
+  used on the homepage (`/`) with a `limit` prop. Date on the right side.
 - `BlogPostsFilter` (`blog-posts-filter.tsx`) — **client component**, receives
   `posts` as props from the server page, manages selected-tag state, used on `/blog`.
-
-When adding new post list views, follow this server/client split — keep `fs` reads
-in server components; pass serialisable data to client components.
+  Features tag filter chips and per-row summary/tags.
 
 ### `ProjectsGrid` (`projects-grid.tsx`) — client component
 
@@ -298,26 +297,59 @@ image: /path/to/cover.png          # Optional
 ## 8. Data Files
 
 ### `src/data/companies.ts`
-Timeline entries shown on `/about` (~/timeline section) and `/companies`.
+Timeline entries shown on `/about` and `/experience`.
 
 ```typescript
 interface Company {
   id: number;
   name: string;
   role: string;
-  startDate: string;    // 'YYYY-MM-DD' — formatted to 'Mon YYYY' at render time
+  startDate: string;    // 'YYYY-MM-DD'
   endDate: string | null;  // null = current position
   description: string;
   url: string;
-  logo?: string;        // path relative to /public
+  logo?: string;
 }
 ```
 
-Add new entries with a new incremented `id`. Keep them in reverse-chronological
-order (newest first) so the timeline renders correctly.
+### `src/data/education.ts`
+Education entries for the `/research` page and homepage Research view. Uses the same
+pattern as `companies.ts` for easy scaling.
+
+```typescript
+interface Education {
+  id: number;
+  degree: string;
+  institution: string;
+  startDate: string;    // 'YYYY-MM-DD'
+  endDate: string | null;
+  description: string;
+  url: string;
+  logo?: string;
+}
+```
+
+### `src/data/papers.ts`
+Publications and research interests for the `/research` page.
+
+```typescript
+interface Paper {
+  title: string;
+  authors: string[];
+  venue: string;
+  year: number;
+  url?: string;       // paper PDF link
+  codeUrl?: string;   // code repository
+  projectUrl?: string; // project/demo page
+  preprintUrl?: string;
+  tags: string[];
+  description?: string;
+  award?: string;
+}
+```
 
 ### `src/data/techStacks.ts`
-Categories + item lists rendered on `/about` (~/tech-stack section).
+Categories + item lists rendered on `/about`.
 Each entry: `{ category: string; items: string[] }`.
 
 ### `src/data/pinnedRepos.ts`
@@ -327,8 +359,6 @@ export const pinnedRepos: string[] = [
   // "Voting-Escrow-Light-Client",
 ];
 ```
-Repos in this list are sorted first in `/projects` and shown with a Pinned badge.
-Update this list whenever the owner wants to highlight specific work.
 
 ---
 
@@ -336,210 +366,76 @@ Update this list whenever the owner wants to highlight specific work.
 
 | URL | File | Server/Client | Notes |
 |---|---|---|---|
-| `/` | `app/page.tsx` | Server | Hero + recent posts (limit 5) |
+| `/` | `app/page.tsx` | Server | Hero + dual Research/Engineering toggle + recent posts |
 | `/about` | `app/about/page.tsx` | Server | Bio, tech stack, timeline, social links |
-| `/blog` | `app/blog/page.tsx` | Server (shell) | Fetches posts; passes to `BlogPostsFilter` |
-| `/blog/[slug]` | `app/blog/[slug]/page.tsx` | SSG | Individual post; tags link back to `/blog` |
-| `/companies` | `app/companies/page.tsx` | Server (shell) | Passes to `CompaniesFilter` client component |
-| `/community` | `app/community/page.tsx` | Server | Tutorial list + coming-soon sections |
-| `/community/tutorials/[slug]` | `app/community/tutorials/[slug]/page.tsx` | SSG | Individual tutorial |
-| `/projects` | `app/projects/page.tsx` | Server (shell) | Renders `ProjectsGrid` client component |
-| `/resume` | `app/resume/page.tsx` | Server | Coming-soon PDF placeholder |
-| `/og` | `app/og/route.tsx` | Dynamic | `?title=...` → 1200×630 OG image |
-| `/rss` | `app/rss/route.ts` | Dynamic | RSS 2.0 XML feed of blog posts |
-| `/sitemap.xml` | `app/sitemap.ts` | Static | Auto-generated |
-| `/robots.txt` | `app/robots.ts` | Static | Auto-generated |
-
-### Navbar items (in order)
-```
-home · blog · projects · companies · community · resume · about
-```
-Defined in `src/components/navbar.tsx` → `navItems` array.
-When adding a new top-level route that should be in the nav, append to `navItems`.
+| `/research` | `app/research/page.tsx` | Server | Research interests, publications, education |
+| `/experience` | `app/experience/page.tsx` | Server | Work & education timeline |
+| `/blog` | `app/blog/page.tsx` | Server | Tag-filtered blog post list |
+| `/blog/[slug]` | `app/blog/[slug]/page.tsx` | Server | Individual blog post |
+| `/projects` | `app/projects/page.tsx` | Server | GitHub repos grid (client fetch) |
+| `/community` | `app/community/page.tsx` | Server | Tutorials + coming-soon sections |
+| `/community/tutorials/[slug]` | `app/community/tutorials/[slug]/page.tsx` | Server | Individual tutorial |
+| `/resume` | `app/resume/page.tsx` | Server | Coming-soon with stats cards |
+| `/companies` | `app/companies/page.tsx` | Server | Redirects to `/experience` |
+| `/og` | `app/og/route.tsx` | Edge | Dynamic OG image |
+| `/rss` | `app/rss/route.ts` | Server | RSS 2.0 feed |
+| `/robots.txt` | `app/robots.ts` | Server | Robots config |
+| `/sitemap.xml` | `app/sitemap.ts` | Server | Sitemap |
 
 ---
 
-## 10. Styling Conventions
+## 10. Navbar Structure
 
-### Tailwind utility ordering
-Follow the Biome auto-organise order. Do not fight the formatter.
-
-### Class composition pattern
-Use the `cn()` helper from `@/lib/utils` when classes are conditional:
-```typescript
-import { cn } from "@/lib/utils";
-cn("base-class", condition && "conditional-class", "another-base")
+```
+[Nguyen Thai Cong]   Home · Research · Experience · Projects · Blog
 ```
 
-### Spacing scale
-- Page section top padding: `py-12`
-- Between MacWindow sections: `space-y-8`
-- Card inner padding: `p-5` (compact) or `p-6` (standard)
-- Gap between grid cards: `gap-4`
-
-### Neutral colour palette (most-used)
-- Text primary: `text-neutral-900 dark:text-neutral-100`
-- Text secondary: `text-neutral-600 dark:text-neutral-400`
-- Text muted: `text-neutral-500 dark:text-neutral-500`
-- Text faint: `text-neutral-400 dark:text-neutral-500`
-- Border: `border-neutral-200/60 dark:border-neutral-700/40`
-- Surface hover: `hover:bg-neutral-100/80 dark:hover:bg-neutral-800/40`
-
-### Rounded corners
-- Cards / windows: `rounded-xl`
-- Badges / chips: `rounded-full` (pill) or `rounded-md` (label)
-- Code blocks: handled by `<Pre>` component (wrapper is `rounded-xl`)
-
-### Status badge colours
-| Status / Level | Background | Text |
-|---|---|---|
-| Success / Current / Beginner | `bg-emerald-100 dark:bg-emerald-900/30` | `text-emerald-700 dark:text-emerald-400` |
-| Warning / In-progress / Intermediate | `bg-amber-100 dark:bg-amber-900/30` | `text-amber-700 dark:text-amber-400` |
-| Error / Advanced | `bg-rose-100 dark:bg-rose-900/30` | `text-rose-700 dark:text-rose-400` |
-| Neutral / Coming-soon | `bg-neutral-100 dark:bg-neutral-800` | `text-neutral-500 dark:text-neutral-400` |
-| Pinned repos | `bg-amber-100 dark:bg-amber-900/30` | `text-amber-700 dark:text-amber-400` |
+5 nav items. The active page gets a solid accent background. The site title is
+the owner's full name, not "0xharryriddle".
 
 ---
 
-## 11. Shared Utilities (`src/lib/utils.ts`)
+## 11. Design Conventions
 
-```typescript
-// Merge Tailwind classes without conflicts
-cn(...inputs: ClassValue[]): string
-
-// Format an ISO date string for display
-formatDate(date: string, includeRelative?: boolean): string
-// formatDate("2024-11-29")         → "November 29, 2024"
-// formatDate("2024-11-29", true)   → "November 29, 2024 (7mo ago)"
-```
-
-`formatDate` lives here (not in `blog/utils.ts`) so that **client components**
-can import it without pulling in `fs`/`path`. `blog/utils.ts` re-exports it for
-backward compatibility.
+- **No macOS window chrome anywhere** — no traffic light dots, no title bars, no MacWindow component. The macOS-style code block header (in `<Pre>`) is the only exception and applies ONLY inside MDX blog/tutorial content.
+- **Card-based grouping**: Use rounded-xl cards with `border border-[var(--border)] bg-[var(--card-bg)] shadow-sm` for section grouping.
+- **Typography hierarchy**: Section titles are `font-semibold text-2xl tracking-tight`. Subsection dividers are `text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)]`.
+- **Tag chips**: Use `rounded-full` pills with accent background: `bg-[var(--accent-light)] text-[var(--accent)] border border-[var(--accent)]/20`.
+- **Links**: Use `text-[var(--accent)]` with `underline underline-offset-2`.
+- **Dates**: Always `text-xs font-mono text-[var(--text-muted)]`.
+- **Horizontal rules**: `border-[var(--border)]` borders for section dividers.
 
 ---
 
-## 12. MDX Prose Styling (`globals.css`)
+## 12. The Dual Identity Concept
 
-All blog / tutorial article content is wrapped in `<article class="prose max-w-none">`.
-The `.prose` class is **entirely custom** (not `@tailwindcss/typography`).
+The site presents two sides of the owner's professional identity:
 
-### Key rules
-- Links (`.prose a`): always `color: var(--mac-accent)` + underline. Bold links
-  (`**[text](url)**`) are rendered correctly as `<strong><a>` and inherit accent colour.
-- Anchor headings (`.prose .anchor`): `visibility: hidden` by default;
-  `visibility: visible` when the parent heading is hovered. The `#` symbol uses
-  `color: #9ca3af` at rest, `var(--mac-accent)` on hover.
-- Code blocks (`.prose pre`): **reset to transparent/borderless** — all chrome is
-  handled by the `<Pre>` React component. Never add border/background back to `.prose pre`.
-- Inline code (`.prose code`): subtle `rgba(0,0,0,0.06)` background; dark mode flips to
-  `rgba(255,255,255,0.08)`.
-- Images (`.prose img`): `max-width: 100%; height: auto; border-radius: 0.75rem`.
-- `sugar-high` syntax token colours are in `:root` as `--sh-*` variables.
+1. **Research / Academic** — Papers, research interests, university education, labs
+2. **Engineering / Application** — Companies, projects, tech stack, industry work
+
+These are presented together on the homepage via the `<DualViewSection>` toggle component
+with a smooth CSS transition. Each side also has its own dedicated page:
+- `/research` for academic content
+- `/experience` and `/projects` for engineering content
+
+When adding new content, consider which side it belongs to and place it accordingly.
 
 ---
 
-## 13. Environment Variables
+## 13. Social Links
 
-| Variable | Required | Default | Purpose |
-|---|---|---|---|
-| `NEXT_PUBLIC_BASE_URL` | No | `https://0xharryriddle.dev` | Canonical URL for OG images, sitemap, RSS |
-
-No secrets or API keys are currently required. The GitHub projects page uses the
-**unauthenticated** REST API (60 req/hr rate limit). If you add a `GITHUB_TOKEN`
-for GraphQL / pinned repos, store it server-side only (no `NEXT_PUBLIC_` prefix).
-
----
-
-## 14. Build & Development Commands
-
-```bash
-npm run dev      # Start development server at http://localhost:3000
-npm run build    # Production build — MUST pass with zero errors before committing
-npm run start    # Start production server (after build)
-npm run lint     # ESLint (legacy; prefer biome check)
-npx biome check  # Lint + format check (Biome)
-npx biome check --write  # Auto-fix lint + format
-```
-
-**Always run `npm run build` before considering a task complete.**
-A successful build is the definition of "done".
-
----
-
-## 15. Agent Instructions & Constraints
-
-### General
-
-1. **Read this file fully before touching any code.**
-2. **Run `npm run build` after every set of changes.** Fix all TypeScript errors before
-   stopping. Biome lint warnings are secondary — fix them if time allows.
-3. **Do not introduce new dependencies** without a strong reason. The existing stack
-   covers all common needs. If you must add a package, check `package.json` first.
-4. **Preserve the macOS aesthetic.** Every new page or section must use `<MacWindow>`
-   or `<MacWindowInline>` as the visual container.
-5. **Keep server/client split clean.** Server components read files/data; client
-   components handle interactivity. Never import `fs`, `path`, or `process.cwd()`
-   from a client component (directly or transitively).
-
-### When adding a new page
-
-1. Create `src/app/<route>/page.tsx`.
-2. Export `metadata` with `title` and `description`.
-3. Add the route to `src/app/sitemap.ts`.
-4. If it should appear in the nav, add it to `navItems` in `src/components/navbar.tsx`.
-5. Wrap content in `<MacWindow title="~/<route>">`.
-
-### When adding a blog post
-
-1. Create `src/app/blog/posts/<slug>.mdx`.
-2. Include all required frontmatter: `title`, `publishedAt`, `summary`, `tags`.
-3. Use `<Callout>` for important notes; let `<Pre>` handle all code blocks automatically.
-4. External images must be added to `next.config.mjs` `remotePatterns`.
-5. No manual slug registration needed — `getBlogPosts()` auto-discovers all `.mdx` files.
-
-### When adding a tutorial
-
-1. Create `content/tutorials/<slug>.mdx`.
-2. Include all required frontmatter including `difficulty`, `duration`, `status`, `tags`.
-3. Set `status: coming-soon` or `in-progress` while writing; flip to `published` when done.
-
-### When adding work/education experience
-
-Edit `src/data/companies.ts`. Add a new `Company` object:
-- Increment `id`.
-- Use `'YYYY-MM-DD'` format for dates (the UI formats them to `Mon YYYY`).
-- Set `endDate: null` for current positions.
-- Place `logo` file in `/public/` and reference it as `/filename.svg`.
-
-### When modifying styles
-
-- CSS variable changes → `globals.css` `:root` and the dark-mode `@media` block.
-- New Tailwind utilities or animations → `tailwind.config.ts` `theme.extend`.
-- Do **not** use inline `style` props for theming; use CSS variables or Tailwind classes.
-  Exception: the `<Pre>` and `<ProjectsGrid>` components use `style` for code-block
-  backgrounds that must be hardcoded dark (`#1e1e1e`, `#2d2d2d`) regardless of theme.
-
-### Coming Soon sections
-
-Several sections are intentionally placeholder. Do **not** fill them with fake data:
-- `/resume` — PDF download
-- `/community` → Speaking Engagements section
-- `/community` → Mentorship section
-
-When the owner is ready to fill them, they will provide real data. Until then, keep
-the existing `ComingSoonSection` component and "Coming Soon" badge intact.
-
-### Social links
-
-Only two social platforms are shown in the UI: **GitHub** and **X (Twitter)**.
+Only three platforms are shown in the UI: **GitHub**, **X (Twitter)**, and **Google Scholar**.
 - GitHub: `https://github.com/0xharryriddle`
 - X: `https://x.com/0xHarryNguyenVN`
+- Google Scholar: `https://scholar.google.com/citations?user=YOUR_SCHOLAR_ID` (update with real ID)
 
 Do not add other platforms (LinkedIn, Telegram, Discord, etc.) without explicit
 instruction from the owner.
 
-### Pinned repositories
+---
+
+## 14. Pinned Repositories
 
 Edit `src/data/pinnedRepos.ts` and add exact GitHub repo names (case-sensitive) to
 the `pinnedRepos` array. These appear first in the `/projects` grid with an amber
@@ -547,14 +443,35 @@ the `pinnedRepos` array. These appear first in the `/projects` grid with an ambe
 
 ---
 
-## 16. Known Patterns & Gotchas
+## 15. Coming Soon Sections
+
+Several sections are intentionally placeholder. Do **not** fill them with fake data:
+- `/resume` — PDF download (stats cards ok, but no fake PDF)
+- `/community` → Speaking Engagements section
+- `/community` → Mentorship section
+
+When the owner is ready to fill them, they will provide real data. Until then, keep
+the existing `ComingSoonSection` component and "Coming Soon" badge intact.
+
+---
+
+## 16. Publications Data
+
+The `/research` page reads from `src/data/papers.ts`. This file starts with an
+empty `papers[]` array and a sample `Paper` interface. When the owner provides real
+publications, add them to the array. The page groups papers by year and renders
+links to paper PDF, code, and project page where available.
+
+---
+
+## 17. Known Patterns & Gotchas
 
 | Pattern | Why |
 |---|---|
 | `formatDate` in `@/lib/utils`, not `@/app/blog/utils` | `blog/utils.ts` uses `fs`; client components can't import it. `blog/utils.ts` re-exports `formatDate` for server-side convenience. |
 | `<Pre>` component in `mdx.tsx`, not CSS `::before` | CSS `::before` + `overflow: hidden` on `<pre>` breaks horizontal scroll. The React component renders traffic lights as DOM nodes and uses an inner scroll div. |
 | `darkMode: "media"` in tailwind.config | No manual toggle exists. `dark:` classes activate via OS preference only. |
-| Company dates stored as `'YYYY-MM-DD'` | Formatted at render time by `formatCompanyDate()`. Never store pre-formatted strings. |
+| Company dates stored as `'YYYY-MM-DD'` | Formatted at render time. Never store pre-formatted strings. |
 | Blog posts only in `src/app/blog/posts/` | `content/posts/` exists but is **not** read by the app. Historical artefact. |
 | Tags frontmatter: comma-separated in blog, bracket array in tutorials | `blog/utils.ts` handles both; `community/utils.ts` expects bracket syntax. Recommend using comma-separated for blog posts. |
 | GitHub API is unauthenticated | Rate-limited to 60 req/hr per IP. If you add server-side fetching, you can add a `GITHUB_TOKEN` (server-only). |
@@ -563,7 +480,7 @@ the `pinnedRepos` array. These appear first in the `/projects` grid with an ambe
 
 ---
 
-## 17. File Naming Conventions
+## 18. File Naming Conventions
 
 | Thing | Convention | Example |
 |---|---|---|
@@ -571,14 +488,14 @@ the `pinnedRepos` array. These appear first in the `/projects` grid with an ambe
 | Route handlers | `route.ts` / `route.tsx` | `src/app/rss/route.ts` |
 | Client components | `kebab-case.tsx` | `blog-posts-filter.tsx` |
 | Server components | `kebab-case.tsx` | `tutorial-list.tsx` |
-| Data files | `camelCase.ts` | `techStacks.ts`, `pinnedRepos.ts` |
+| Data files | `camelCase.ts` | `techStacks.ts`, `pinnedRepos.ts`, `papers.ts` |
 | MDX blog posts | `kebab-case.mdx` | `integrate-light-client-polkadot.mdx` |
 | MDX tutorials | `kebab-case.mdx` | `building-custom-substrate-pallet.mdx` |
 | Static assets | `PascalCase.svg` or descriptive | `SenseERP.svg`, `Logo_UIT_updated.svg` |
 
 ---
 
-## 18. Metadata & SEO
+## 19. Metadata & SEO
 
 All pages export a `metadata` object:
 ```typescript
@@ -596,4 +513,4 @@ The RSS feed is at `/rss` and linked in the footer.
 
 ---
 
-*Last updated: added § 0 Token Efficiency; blog tags & filtering; pinned repos with star/fork counts; resume Coming Soon page; X (Twitter) social links; code block horizontal scroll fix; heading anchor colour fix; `formatDate` moved to `@/lib/utils`; company dates formatted as `Mon YYYY`; comprehensive AGENTS.md.*
+*Last updated: Redesigned from macOS windows theme to clean professional dual-identity layout. Replaced MacWindow components with card-based design. Added Research page, papers data structure, DualViewSection homepage toggle, Experience route. Removed mac-window.tsx and companies-filter.tsx. Updated nav to 5 items (Home, Research, Experience, Projects, Blog).*

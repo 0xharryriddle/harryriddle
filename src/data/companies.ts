@@ -4,7 +4,8 @@ export interface Company {
   role: string;
   startDate: string;
   endDate: string | null; // null means current
-  description: string;
+  description: string;     // summary line for compact views
+  highlights: string[];    // bullet points for the full CV view
   url: string;
   logo?: string;
 }
@@ -17,29 +18,30 @@ export const companies: Company[] = [
     startDate: "2025-03-01",
     endDate: null,
     description:
-      "Developed and maintained fullstack applications using C# with ASP.NET Core and Flutter for mobile. Collaborated with cross-functional teams to deliver scalable solutions.",
+      "Building production-grade fullstack applications with C# / ASP.NET Core and Flutter.",
+    highlights: [
+      "Developed fullstack enterprise ERP modules using C# with ASP.NET Core and Flutter for mobile",
+      "Designed and implemented RESTful APIs integrating with PostgreSQL and Redis for data persistence and caching",
+      "Collaborated with cross-functional teams across product, design, and QA to deliver end-to-end features",
+      "Contributed to system architecture decisions, improving API response times through query optimization",
+    ],
     url: "https://www.senseerp.com/",
     logo: "/SenseERP.svg",
   },
   {
     id: 2,
-    name: "University of Information Technology (UIT)",
-    role: "Software Engineering Student",
-    startDate: "2021-08-01",
-    endDate: "2025-11-30",
-    description:
-      "Studying Software Engineering with a focus on Web3 and Blockchain technologies. Building knowledge in distributed systems and decentralized applications.",
-    url: "https://www.uit.edu.vn/",
-    logo: "/Logo_UIT_updated.ico",
-  },
-  {
-    id: 3,
     name: "LearnWeb3",
     role: "Blockchain Developer Student",
     startDate: "2023-06-01",
     endDate: null,
     description:
-      "Learning and building in the Web3 space. Exploring smart contract development, DeFi protocols, and decentralized application architecture.",
+      "Studied smart contract development, DeFi protocols, and decentralized application architecture.",
+    highlights: [
+      "Built smart contracts in Solidity covering token standards (ERC-20, ERC-721), DeFi primitives, and access control patterns",
+      "Developed and deployed dApps interacting with Ethereum and test networks using Hardhat and ethers.js",
+      "Analyzed DeFi protocol architectures including AMMs, lending pools, and governance mechanisms",
+      "Authored technical documentation and walkthroughs for blockchain development patterns",
+    ],
     url: "https://learnweb3.io/",
     logo: "/Learnweb3.png",
   },

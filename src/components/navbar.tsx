@@ -4,13 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { path: "/", name: "home" },
-  { path: "/blog", name: "blog" },
-  { path: "/projects", name: "projects" },
-  { path: "/companies", name: "companies" },
-  { path: "/community", name: "community" },
-  { path: "/resume", name: "resume" },
-  { path: "/about", name: "about" },
+  { path: "/", name: "Home" },
+  { path: "/research", name: "Research" },
+  { path: "/experience", name: "Experience" },
+  { path: "/projects", name: "Projects" },
+  { path: "/blog", name: "Blog" },
 ];
 
 export function Navbar() {
@@ -26,26 +24,24 @@ export function Navbar() {
       <nav
         className="
           mx-auto
-          border-b border-neutral-200/50 dark:border-neutral-700/50
-          bg-white/72 dark:bg-neutral-900/72
-          backdrop-blur-xl backdrop-saturate-150
+          border-b border-[var(--border)]
+          bg-[var(--bg-secondary)]/80
+          backdrop-blur-xl
         "
       >
-        <div className="max-w-3xl mx-auto px-6 h-12 flex items-center justify-between">
-          {/* Logo / Name */}
+        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link
             href="/"
             className="
               font-mono text-sm font-semibold tracking-tight
-              text-neutral-900 dark:text-neutral-100
-              hover:text-neutral-600 dark:hover:text-neutral-300
+              text-[var(--text-primary)]
+              hover:text-[var(--text-secondary)]
               transition-colors
             "
           >
-            0xharryriddle
+            Nguyen Thai Cong
           </Link>
 
-          {/* Nav Links */}
           <div className="flex items-center gap-1">
             {navItems.map(({ path, name }) => (
               <Link
@@ -55,8 +51,8 @@ export function Navbar() {
                   px-3 py-1.5 rounded-lg text-sm transition-all duration-200
                   ${
                     isActive(path)
-                      ? "bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 font-medium"
-                      : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100/80 dark:hover:bg-neutral-800/80"
+                      ? "bg-[var(--accent)] text-white font-medium"
+                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border)]/40"
                   }
                 `}
               >
