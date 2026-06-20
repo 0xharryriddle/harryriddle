@@ -1,49 +1,49 @@
-"use client";
+'use client'
 
-import { useState, useCallback } from "react";
-import { BookOpen, Briefcase } from "lucide-react";
-import Link from "next/link";
-import { researchInterests } from "@/data/papers";
-import { education } from "@/data/education";
-import { companies } from "@/data/companies";
-import { techStack } from "@/data/techStacks";
-import type { Company } from "@/data/companies";
+import { BookOpen, Briefcase } from 'lucide-react'
+import Link from 'next/link'
+import { useCallback, useState } from 'react'
+import type { Company } from '@/data/companies'
+import { companies } from '@/data/companies'
+import { education } from '@/data/education'
+import { researchInterests } from '@/data/papers'
+import { techStack } from '@/data/techStacks'
 
-type ViewMode = "research" | "engineering";
+type ViewMode = 'research' | 'engineering'
 
 export default function DualViewSection() {
-  const [activeView, setActiveView] = useState<ViewMode>("research");
-  const [transitioning, setTransitioning] = useState(false);
+  const [activeView, setActiveView] = useState<ViewMode>('research')
+  const [transitioning, setTransitioning] = useState(false)
 
   const switchView = useCallback(
     (view: ViewMode) => {
-      if (view === activeView || transitioning) return;
-      setTransitioning(true);
+      if (view === activeView || transitioning) return
+      setTransitioning(true)
       requestAnimationFrame(() => {
-        setActiveView(view);
+        setActiveView(view)
         requestAnimationFrame(() => {
-          setTransitioning(false);
-        });
-      });
+          setTransitioning(false)
+        })
+      })
     },
     [activeView, transitioning],
-  );
+  )
 
-  const currentCompanies = companies.filter((c) => c.endDate === null);
+  const currentCompanies = companies.filter((c) => c.endDate === null)
 
   return (
     <div>
       <div className="flex items-center justify-center gap-2 mb-8">
         <button
           type="button"
-          onClick={() => switchView("research")}
+          onClick={() => switchView('research')}
           className={`
             inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium
             transition-all duration-300 border
             ${
-              activeView === "research"
-                ? "bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm"
-                : "bg-transparent text-[var(--text-secondary)] border-[var(--border)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              activeView === 'research'
+                ? 'bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm'
+                : 'bg-transparent text-[var(--text-secondary)] border-[var(--border)] hover:border-[var(--accent)] hover:text-[var(--accent)]'
             }
           `}
         >
@@ -52,14 +52,14 @@ export default function DualViewSection() {
         </button>
         <button
           type="button"
-          onClick={() => switchView("engineering")}
+          onClick={() => switchView('engineering')}
           className={`
             inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium
             transition-all duration-300 border
             ${
-              activeView === "engineering"
-                ? "bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm"
-                : "bg-transparent text-[var(--text-secondary)] border-[var(--border)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              activeView === 'engineering'
+                ? 'bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm'
+                : 'bg-transparent text-[var(--text-secondary)] border-[var(--border)] hover:border-[var(--accent)] hover:text-[var(--accent)]'
             }
           `}
         >
@@ -73,31 +73,31 @@ export default function DualViewSection() {
           className={`
             transition-all duration-400 ease-out
             ${
-              activeView === "research"
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-3 absolute inset-0 pointer-events-none"
+              activeView === 'research'
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-3 absolute inset-0 pointer-events-none'
             }
           `}
         >
-          {activeView === "research" && <ResearchContent />}
+          {activeView === 'research' && <ResearchContent />}
         </div>
         <div
           className={`
             transition-all duration-400 ease-out
             ${
-              activeView === "engineering"
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-3 absolute inset-0 pointer-events-none"
+              activeView === 'engineering'
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-3 absolute inset-0 pointer-events-none'
             }
           `}
         >
-          {activeView === "engineering" && (
+          {activeView === 'engineering' && (
             <EngineeringContent currentCompanies={currentCompanies} />
           )}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function ResearchContent() {
@@ -110,12 +110,8 @@ function ResearchContent() {
         <div className="space-y-3">
           {researchInterests.map((interest) => (
             <div key={interest.area}>
-              <p className="font-medium text-sm text-[var(--text-primary)]">
-                {interest.area}
-              </p>
-              <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                {interest.description}
-              </p>
+              <p className="font-medium text-sm text-[var(--text-primary)]">{interest.area}</p>
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5">{interest.description}</p>
             </div>
           ))}
         </div>
@@ -129,16 +125,18 @@ function ResearchContent() {
             <div key={item.id} className="flex items-start gap-3">
               <div className="w-2 h-2 rounded-full bg-[var(--accent)] mt-1.5 shrink-0" />
               <div>
-                <p className="font-medium text-sm text-[var(--text-primary)]">
-                  {item.degree}
-                </p>
+                <p className="font-medium text-sm text-[var(--text-primary)]">{item.degree}</p>
                 <p className="text-xs text-[var(--text-secondary)]">
-                  {item.institution} &mdash;{" "}
-                  {new Date(item.startDate + "T00:00:00").toLocaleDateString("en-US", { year: "numeric" })}
+                  {item.institution} &mdash;{' '}
+                  {new Date(item.startDate + 'T00:00:00').toLocaleDateString('en-US', {
+                    year: 'numeric',
+                  })}
                   &ndash;
                   {item.endDate
-                    ? new Date(item.endDate + "T00:00:00").toLocaleDateString("en-US", { year: "numeric" })
-                    : "Present"}
+                    ? new Date(item.endDate + 'T00:00:00').toLocaleDateString('en-US', {
+                        year: 'numeric',
+                      })
+                    : 'Present'}
                 </p>
               </div>
             </div>
@@ -151,20 +149,22 @@ function ResearchContent() {
           className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
         >
           View all research & publications
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg
+            className="w-3.5 h-3.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
         </Link>
       </div>
     </div>
-  );
+  )
 }
 
-function EngineeringContent({
-  currentCompanies,
-}: {
-  currentCompanies: Company[];
-}) {
+function EngineeringContent({ currentCompanies }: { currentCompanies: Company[] }) {
   return (
     <div className="space-y-5">
       <div className="p-5 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] shadow-sm">
@@ -212,7 +212,13 @@ function EngineeringContent({
           className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
         >
           Full experience timeline
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg
+            className="w-3.5 h-3.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
         </Link>
@@ -221,11 +227,17 @@ function EngineeringContent({
           className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
         >
           View projects
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg
+            className="w-3.5 h-3.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
         </Link>
       </div>
     </div>
-  );
+  )
 }

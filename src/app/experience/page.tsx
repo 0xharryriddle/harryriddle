@@ -1,21 +1,21 @@
-import { companies } from "@/data/companies";
-import { education } from "@/data/education";
-import { techStack } from "@/data/techStacks";
-import Image from "next/image";
+import Image from 'next/image'
+import { companies } from '@/data/companies'
+import { education } from '@/data/education'
+import { techStack } from '@/data/techStacks'
 
 export const metadata = {
-  title: "Experience",
-  description: "Professional experience and skills.",
-};
+  title: 'Experience',
+  description: 'Professional experience and skills.',
+}
 
 function formatDate(dateStr: string): string {
-  const date = new Date(dateStr + "T00:00:00");
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  const date = new Date(dateStr + 'T00:00:00')
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 }
 
 function formatYear(dateStr: string): string {
-  const date = new Date(dateStr + "T00:00:00");
-  return String(date.getFullYear());
+  const date = new Date(dateStr + 'T00:00:00')
+  return String(date.getFullYear())
 }
 
 export default function ExperiencePage() {
@@ -26,8 +26,8 @@ export default function ExperiencePage() {
           Curriculum Vitae
         </h1>
         <p className="text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-          Software engineer and blockchain researcher with experience in
-          fullstack development, distributed systems, and Web3 infrastructure.
+          Software engineer and blockchain researcher with experience in fullstack development,
+          distributed systems, and Web3 infrastructure.
         </p>
       </div>
 
@@ -79,8 +79,8 @@ export default function ExperiencePage() {
 
               {/* Date line */}
               <p className="text-xs font-mono text-[var(--text-muted)] mb-2">
-                {formatDate(item.startDate)} &mdash;{" "}
-                {item.endDate ? formatDate(item.endDate) : "Present"}
+                {formatDate(item.startDate)} &mdash;{' '}
+                {item.endDate ? formatDate(item.endDate) : 'Present'}
                 {item.endDate === null && (
                   <span className="ml-2 px-1.5 py-0.5 text-[9px] font-medium rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20">
                     Current
@@ -144,8 +144,8 @@ export default function ExperiencePage() {
                 )}
               </div>
               <p className="text-xs font-mono text-[var(--text-muted)] mb-2">
-                {item.startDate && formatYear(item.startDate)} &mdash;{" "}
-                {item.endDate ? formatYear(item.endDate) : "Present"}
+                {item.startDate && formatYear(item.startDate)} &mdash;{' '}
+                {item.endDate ? formatYear(item.endDate) : 'Present'}
               </p>
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                 {item.description}
@@ -167,12 +167,12 @@ export default function ExperiencePage() {
                 {category}
               </h3>
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                {items.join(", ")}
+                {items.join(', ')}
               </p>
             </div>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

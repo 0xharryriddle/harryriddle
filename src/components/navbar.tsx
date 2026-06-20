@@ -1,23 +1,23 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const navItems = [
-  { path: "/", name: "Home" },
-  { path: "/research", name: "Research" },
-  { path: "/experience", name: "Experience" },
-  { path: "/projects", name: "Projects" },
-  { path: "/blog", name: "Blog" },
-];
+  { path: '/', name: 'Home' },
+  { path: '/research', name: 'Research' },
+  { path: '/experience', name: 'Experience' },
+  { path: '/projects', name: 'Projects' },
+  { path: '/blog', name: 'Blog' },
+]
 
 export function Navbar() {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   const isActive = (path: string) => {
-    if (path === "/") return pathname === "/";
-    return pathname.startsWith(path);
-  };
+    if (path === '/') return pathname === '/'
+    return pathname.startsWith(path)
+  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -51,8 +51,8 @@ export function Navbar() {
                   px-3 py-1.5 rounded-lg text-sm transition-all duration-200
                   ${
                     isActive(path)
-                      ? "bg-[var(--accent)] text-white font-medium"
-                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border)]/40"
+                      ? 'bg-[var(--accent)] text-white font-medium'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border)]/40'
                   }
                 `}
               >
@@ -63,5 +63,5 @@ export function Navbar() {
         </div>
       </nav>
     </header>
-  );
+  )
 }

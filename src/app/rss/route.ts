@@ -1,29 +1,27 @@
-import { getBlogPosts } from "@/app/blog/utils";
+import { getBlogPosts } from '@/app/blog/utils'
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://0xharryriddle.dev";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://0xharryriddle.dev'
 
 export async function GET() {
-  const allBlogs = getBlogPosts();
+  const allBlogs = getBlogPosts()
 
   const itemsXml = allBlogs
     .sort((a, b) => {
       if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
-        return -1;
+        return -1
       }
-      return 1;
+      return 1
     })
     .map(
       (post) =>
         `<item>
           <title>${post.metadata.title}</title>
           <link>${baseUrl}/blog/${post.slug}</link>
-          <description>${post.metadata.summary || ""}</description>
-          <pubDate>${new Date(
-            post.metadata.publishedAt,
-          ).toUTCString()}</pubDate>
+          <description>${post.metadata.summary || ''}</description>
+          <pubDate>${new Date(post.metadata.publishedAt).toUTCString()}</pubDate>
         </item>`,
     )
-    .join("\n");
+    .join('\n')
 
   const rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
   <rss version="2.0">
@@ -33,11 +31,11 @@ export async function GET() {
         <description>Blog posts by 0xharryriddle - Software Engineer & Blockchain Developer</description>
         ${itemsXml}
     </channel>
-  </rss>`;
+  </rss>`
 
   return new Response(rssFeed, {
     headers: {
-      "Content-Type": "text/xml",
+      'Content-Type': 'text/xml',
     },
-  });
+  })
 }

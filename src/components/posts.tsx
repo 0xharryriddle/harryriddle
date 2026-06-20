@@ -1,17 +1,17 @@
-import Link from "next/link";
-import { formatDate, getBlogPosts } from "@/app/blog/utils";
+import Link from 'next/link'
+import { formatDate, getBlogPosts } from '@/app/blog/utils'
 
 export function BlogPosts({ limit }: { limit?: number }) {
-  const allBlogs = getBlogPosts();
+  const allBlogs = getBlogPosts()
 
   const sorted = allBlogs.sort((a, b) => {
     if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
-      return -1;
+      return -1
     }
-    return 1;
-  });
+    return 1
+  })
 
-  const posts = limit ? sorted.slice(0, limit) : sorted;
+  const posts = limit ? sorted.slice(0, limit) : sorted
 
   return (
     <div className="flex flex-col">
@@ -35,5 +35,5 @@ export function BlogPosts({ limit }: { limit?: number }) {
         </Link>
       ))}
     </div>
-  );
+  )
 }

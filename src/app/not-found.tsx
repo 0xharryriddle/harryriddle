@@ -1,15 +1,11 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 export default function NotFound() {
   return (
     <section className="py-24 flex items-center justify-center min-h-[60vh]">
       <div className="text-center max-w-md">
-        <p className="text-6xl font-mono font-bold text-[var(--text-primary)] mb-4">
-          404
-        </p>
-        <p className="text-[var(--text-secondary)] mb-8">
-          This page could not be found.
-        </p>
+        <p className="text-6xl font-mono font-bold text-[var(--text-primary)] mb-4">404</p>
+        <p className="text-[var(--text-secondary)] mb-8">This page could not be found.</p>
         <Link
           href="/"
           className="
@@ -22,5 +18,5 @@ export default function NotFound() {
         </Link>
       </div>
     </section>
-  );
+  )
 }

@@ -14,4 +14,4 @@
  */
 export const pinnedRepos: string[] = [
   // Add your featured repo names here
-];
+]

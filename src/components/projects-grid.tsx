@@ -1,24 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ProjectCard, ProjectCardSkeleton } from "./project-card";
+import { useEffect, useState } from "react";
 import { pinnedRepos } from "@/data/pinnedRepos";
+import { ProjectCard, ProjectCardSkeleton } from "./project-card";
+import type { Repository } from "@/types";
 
 const GITHUB_USERNAME = "0xharryriddle";
-
-interface Repository {
-  name: string;
-  description: string;
-  url: string;
-  primaryLanguage: {
-    name: string;
-    color: string;
-  } | null;
-  updatedAt: string;
-  stars: number;
-  forks: number;
-  isPinned: boolean;
-}
 
 export default function ProjectsGrid() {
   const [repos, setRepos] = useState<Repository[]>([]);
@@ -29,7 +16,7 @@ export default function ProjectsGrid() {
     async function fetchRepos() {
       try {
         const res = await fetch(
-          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=30&type=owner`,
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=30&type=owner&&pin=true`,
         );
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
@@ -85,8 +72,18 @@ export default function ProjectsGrid() {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
-        <svg className="w-10 h-10 text-[var(--text-muted)] mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+        <svg
+          className="w-10 h-10 text-[var(--text-muted)] mb-3"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={1.5}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+          />
         </svg>
         <p className="text-sm text-[var(--text-muted)]">
           Could not load repositories. Check back later.
