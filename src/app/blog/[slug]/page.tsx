@@ -1,30 +1,23 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "@/components/mdx";
-import { formatDate, getBlogPosts } from "@/app/blog/utils";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { formatDate, getBlogPosts } from '@/app/blog/utils'
+import { CustomMDX } from '@/components/mdx'
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://0xharryriddle.dev";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://0xharryriddle.dev'
 
 export async function generateStaticParams() {
-  const posts = getBlogPosts();
-  return posts.map((post) => ({ slug: post.slug }));
+  const posts = getBlogPosts()
+  return posts.map((post) => ({ slug: post.slug }))
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = getBlogPosts().find((post) => post.slug === params.slug);
-  if (!post) return;
+  const post = getBlogPosts().find((post) => post.slug === params.slug)
+  if (!post) return
 
-  const {
-    title,
-    publishedAt: publishedTime,
-    summary: description,
-    image,
-  } = post.metadata;
+  const { title, publishedAt: publishedTime, summary: description, image } = post.metadata
 
-  const ogImage = image
-    ? image
-    : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
+  const ogImage = image ? image : `${baseUrl}/og?title=${encodeURIComponent(title)}`
 
   return {
     title,
@@ -32,25 +25,25 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
     openGraph: {
       title,
       description,
-      type: "article",
+      type: 'article',
       publishedTime,
       url: `${baseUrl}/blog/${post.slug}`,
       images: [{ url: ogImage }],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title,
       description,
       images: [ogImage],
     },
-  };
+  }
 }
 
 export default function Blog({ params }: { params: { slug: string } }) {
-  const post = getBlogPosts().find((post) => post.slug === params.slug);
+  const post = getBlogPosts().find((post) => post.slug === params.slug)
 
   if (!post) {
-    notFound();
+    notFound()
   }
 
   return (
@@ -60,8 +53,8 @@ export default function Blog({ params }: { params: { slug: string } }) {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
             headline: post.metadata.title,
             datePublished: post.metadata.publishedAt,
             dateModified: post.metadata.publishedAt,
@@ -71,8 +64,8 @@ export default function Blog({ params }: { params: { slug: string } }) {
               : `/og?title=${encodeURIComponent(post.metadata.title)}`,
             url: `${baseUrl}/blog/${post.slug}`,
             author: {
-              "@type": "Person",
-              name: "0xharryriddle",
+              '@type': 'Person',
+              name: '0xharryriddle',
             },
           }),
         }}
@@ -94,9 +87,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
         </h1>
 
         <div className="flex flex-wrap items-center gap-3 text-sm">
-          <time className="text-[var(--text-muted)]">
-            {formatDate(post.metadata.publishedAt)}
-          </time>
+          <time className="text-[var(--text-muted)]">{formatDate(post.metadata.publishedAt)}</time>
         </div>
 
         {post.metadata.tags && post.metadata.tags.length > 0 && (
@@ -119,5 +110,5 @@ export default function Blog({ params }: { params: { slug: string } }) {
         <CustomMDX source={post.content} />
       </article>
     </section>
-  );
+  )
 }

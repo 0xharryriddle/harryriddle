@@ -1,26 +1,24 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "@/components/mdx";
-import { formatDate } from "@/app/blog/utils";
-import { getTutorials } from "@/app/community/utils";
-import Link from "next/link";
-import type { TutorialDifficulty } from "@/app/community/utils";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { formatDate } from '@/app/blog/utils'
+import type { TutorialDifficulty } from '@/app/community/utils'
+import { getTutorials } from '@/app/community/utils'
+import { CustomMDX } from '@/components/mdx'
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://0xharryriddle.dev";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://0xharryriddle.dev'
 
 export async function generateStaticParams() {
-  const tutorials = getTutorials();
-  return tutorials
-    .filter((t) => t.metadata.status !== "coming-soon")
-    .map((t) => ({ slug: t.slug }));
+  const tutorials = getTutorials()
+  return tutorials.filter((t) => t.metadata.status !== 'coming-soon').map((t) => ({ slug: t.slug }))
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
-  const tutorial = getTutorials().find((t) => t.slug === params.slug);
-  if (!tutorial) return;
+  const tutorial = getTutorials().find((t) => t.slug === params.slug)
+  if (!tutorial) return
 
-  const { title, summary: description } = tutorial.metadata;
-  const ogImage = `${baseUrl}/og?title=${encodeURIComponent(title)}`;
+  const { title, summary: description } = tutorial.metadata
+  const ogImage = `${baseUrl}/og?title=${encodeURIComponent(title)}`
 
   return {
     title,
@@ -28,28 +26,25 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
     openGraph: {
       title,
       description,
-      type: "article",
+      type: 'article',
       url: `${baseUrl}/community/tutorials/${tutorial.slug}`,
       images: [{ url: ogImage }],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title,
       description,
       images: [ogImage],
     },
-  };
+  }
 }
 
 function DifficultyBadge({ difficulty }: { difficulty: TutorialDifficulty }) {
   const styles: Record<TutorialDifficulty, string> = {
-    beginner:
-      "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-    intermediate:
-      "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-    advanced:
-      "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
-  };
+    beginner: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+    intermediate: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
+    advanced: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+  }
 
   return (
     <span
@@ -57,14 +52,14 @@ function DifficultyBadge({ difficulty }: { difficulty: TutorialDifficulty }) {
     >
       {difficulty}
     </span>
-  );
+  )
 }
 
 export default function TutorialPage({ params }: { params: { slug: string } }) {
-  const tutorial = getTutorials().find((t) => t.slug === params.slug);
+  const tutorial = getTutorials().find((t) => t.slug === params.slug)
 
-  if (!tutorial || tutorial.metadata.status === "coming-soon") {
-    notFound();
+  if (!tutorial || tutorial.metadata.status === 'coming-soon') {
+    notFound()
   }
 
   return (
@@ -113,5 +108,5 @@ export default function TutorialPage({ params }: { params: { slug: string } }) {
         <CustomMDX source={tutorial.content} />
       </article>
     </section>
-  );
+  )
 }

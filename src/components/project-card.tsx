@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
 interface ProjectCardProps {
-  name: string;
-  description: string;
-  url: string;
-  language?: string;
-  languageColor?: string;
-  updatedAt: string;
-  stars?: number;
-  forks?: number;
-  isPinned?: boolean;
+  name: string
+  description: string
+  url: string
+  language?: string
+  languageColor?: string
+  updatedAt: string
+  stars?: number
+  forks?: number
+  isPinned?: boolean
 }
 
 export function ProjectCard({
@@ -24,18 +24,18 @@ export function ProjectCard({
   isPinned = false,
 }: ProjectCardProps) {
   const formatDate = (inputDate: string) => {
-    const date = new Date(inputDate);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
+    const date = new Date(inputDate)
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })
+  }
 
   const formatCount = (n: number): string => {
-    if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
-    return String(n);
-  };
+    if (n >= 1000) return `${(n / 1000).toFixed(1)}k`
+    return String(n)
+  }
 
   return (
     <a href={url} target="_blank" rel="noopener noreferrer">
@@ -51,12 +51,14 @@ export function ProjectCard({
         {/* Header */}
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 min-w-0">
-            <svg className="w-4 h-4 shrink-0 text-[var(--text-muted)]" viewBox="0 0 16 16" fill="currentColor">
+            <svg
+              className="w-4 h-4 shrink-0 text-[var(--text-muted)]"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+            >
               <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z" />
             </svg>
-            <h3 className="font-medium text-[var(--text-primary)] truncate text-sm">
-              {name}
-            </h3>
+            <h3 className="font-medium text-[var(--text-primary)] truncate text-sm">{name}</h3>
           </div>
           {isPinned && (
             <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200/60 dark:border-amber-700/40">
@@ -70,7 +72,7 @@ export function ProjectCard({
 
         {/* Description */}
         <p className="text-sm text-[var(--text-secondary)] line-clamp-2 flex-1 mb-4">
-          {description || "No description available"}
+          {description || 'No description available'}
         </p>
 
         {/* Footer */}
@@ -79,7 +81,7 @@ export function ProjectCard({
             <div className="flex items-center gap-1.5">
               <span
                 className="w-2.5 h-2.5 rounded-full shrink-0"
-                style={{ backgroundColor: languageColor || "#858585" }}
+                style={{ backgroundColor: languageColor || '#858585' }}
               />
               <span>{language}</span>
             </div>
@@ -104,7 +106,7 @@ export function ProjectCard({
         </div>
       </div>
     </a>
-  );
+  )
 }
 
 export function ProjectCardSkeleton() {
@@ -127,5 +129,5 @@ export function ProjectCardSkeleton() {
         </div>
       </div>
     </div>
-  );
+  )
 }

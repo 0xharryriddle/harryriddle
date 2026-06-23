@@ -78,31 +78,15 @@ body::before {
   bottom: 0;
   z-index: -1;
   background:
-    radial-gradient(
-      ellipse at 20% 50%,
-      rgba(37, 99, 235, 0.04) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse at 80% 20%,
-      rgba(99, 102, 241, 0.03) 0%,
-      transparent 50%
-    );
+    radial-gradient(ellipse at 20% 50%, rgba(37, 99, 235, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(99, 102, 241, 0.03) 0%, transparent 50%);
 }
 
 @media (prefers-color-scheme: dark) {
   body::before {
     background:
-      radial-gradient(
-        ellipse at 20% 50%,
-        rgba(59, 130, 246, 0.07) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        ellipse at 80% 20%,
-        rgba(99, 102, 241, 0.05) 0%,
-        transparent 50%
-      );
+      radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
   }
 }
 
@@ -312,5 +296,7 @@ table {
 .dual-view-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  transition:
+    opacity 0.4s ease-out,
+    transform 0.4s ease-out;
 }

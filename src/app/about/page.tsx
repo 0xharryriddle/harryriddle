@@ -1,17 +1,17 @@
-import Image from "next/image";
-import { companies } from "@/data/companies";
-import { education } from "@/data/education";
-import { techStack } from "@/data/techStacks";
+import Image from 'next/image'
+import { companies } from '@/data/companies'
+import { education } from '@/data/education'
+import { techStack } from '@/data/techStacks'
 
 function formatDate(dateStr: string): string {
-  const date = new Date(dateStr + "T00:00:00");
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  const date = new Date(dateStr + 'T00:00:00')
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 }
 
 export const metadata = {
-  title: "About",
-  description: "About Nguyen Thai Cong — Blockchain Researcher & Engineer.",
-};
+  title: 'About',
+  description: 'About Nguyen Thai Cong — Blockchain Researcher & Engineer.',
+}
 
 export default function AboutPage() {
   return (
@@ -40,13 +40,12 @@ export default function AboutPage() {
           </div>
         </div>
         <p className="text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-          I&apos;m a software engineer and blockchain researcher based in
-          Ho Chi Minh City, Vietnam. I build things that live on chains — light
-          clients, cross-chain bridges, production APIs — and I write about what
-          I learn along the way. I recently graduated from UIT with a degree in
-          Software Engineering, where I spent most of my time deep in Polkadot
-          and Substrate internals. When I&apos;m not coding, I&apos;m probably
-          reading about distributed systems or tinkering with ZK proofs.
+          I&apos;m a software engineer and blockchain researcher based in Ho Chi Minh City, Vietnam.
+          I build things that live on chains — light clients, cross-chain bridges, production APIs —
+          and I write about what I learn along the way. I recently graduated from UIT with a degree
+          in Software Engineering, where I spent most of my time deep in Polkadot and Substrate
+          internals. When I&apos;m not coding, I&apos;m probably reading about distributed systems
+          or tinkering with ZK proofs.
         </p>
       </div>
 
@@ -110,15 +109,11 @@ export default function AboutPage() {
                       <h3 className="font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
                         {item.name}
                       </h3>
-                      <p className="text-sm text-[var(--text-secondary)]">
-                        {item.role}
-                      </p>
+                      <p className="text-sm text-[var(--text-secondary)]">{item.role}</p>
                     </div>
                     <span className="text-xs font-mono text-[var(--text-muted)] shrink-0">
-                      {formatDate(item.startDate)} &mdash;{" "}
-                      {item.endDate
-                        ? formatDate(item.endDate)
-                        : "Present"}
+                      {formatDate(item.startDate)} &mdash;{' '}
+                      {item.endDate ? formatDate(item.endDate) : 'Present'}
                     </span>
                   </div>
                   <p className="text-sm text-[var(--text-secondary)] mt-2 leading-relaxed">
@@ -146,15 +141,11 @@ export default function AboutPage() {
                       <h3 className="font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
                         {item.institution}
                       </h3>
-                      <p className="text-sm text-[var(--text-secondary)]">
-                        {item.degree}
-                      </p>
+                      <p className="text-sm text-[var(--text-secondary)]">{item.degree}</p>
                     </div>
                     <span className="text-xs font-mono text-[var(--text-muted)] shrink-0">
-                      {formatDate(item.startDate)} &mdash;{" "}
-                      {item.endDate
-                        ? formatDate(item.endDate)
-                        : "Present"}
+                      {formatDate(item.startDate)} &mdash;{' '}
+                      {item.endDate ? formatDate(item.endDate) : 'Present'}
                     </span>
                   </div>
                   <p className="text-sm text-[var(--text-secondary)] mt-2 leading-relaxed">
@@ -208,5 +199,5 @@ export default function AboutPage() {
         </div>
       </div>
     </section>
-  );
+  )
 }

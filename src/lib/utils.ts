@@ -1,8 +1,8 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
 /**
@@ -12,39 +12,39 @@ export function cn(...inputs: ClassValue[]) {
  * @param includeRelative - When true, appends a relative label like "(3mo ago)"
  */
 export function formatDate(date: string, includeRelative = false): string {
-  const currentDate = new Date();
+  const currentDate = new Date()
 
-  if (!date.includes("T")) {
-    date = `${date}T00:00:00`;
+  if (!date.includes('T')) {
+    date = `${date}T00:00:00`
   }
 
-  const targetDate = new Date(date);
+  const targetDate = new Date(date)
 
-  const yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
-  const monthsAgo = currentDate.getMonth() - targetDate.getMonth();
-  const daysAgo = currentDate.getDate() - targetDate.getDate();
+  const yearsAgo = currentDate.getFullYear() - targetDate.getFullYear()
+  const monthsAgo = currentDate.getMonth() - targetDate.getMonth()
+  const daysAgo = currentDate.getDate() - targetDate.getDate()
 
-  let relativeLabel: string;
+  let relativeLabel: string
 
   if (yearsAgo > 0) {
-    relativeLabel = `${yearsAgo}y ago`;
+    relativeLabel = `${yearsAgo}y ago`
   } else if (monthsAgo > 0) {
-    relativeLabel = `${monthsAgo}mo ago`;
+    relativeLabel = `${monthsAgo}mo ago`
   } else if (daysAgo > 0) {
-    relativeLabel = `${daysAgo}d ago`;
+    relativeLabel = `${daysAgo}d ago`
   } else {
-    relativeLabel = "Today";
+    relativeLabel = 'Today'
   }
 
-  const fullDate = targetDate.toLocaleString("en-us", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const fullDate = targetDate.toLocaleString('en-us', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
 
   if (!includeRelative) {
-    return fullDate;
+    return fullDate
   }
 
-  return `${fullDate} (${relativeLabel})`;
+  return `${fullDate} (${relativeLabel})`
 }

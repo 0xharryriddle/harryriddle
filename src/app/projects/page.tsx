@@ -1,9 +1,9 @@
-import ProjectsGrid from "@/components/projects-grid";
+import ProjectsGrid from '@/components/projects-grid'
 
 export const metadata = {
-  title: "Projects",
-  description: "Open source projects and repositories.",
-};
+  title: 'Projects',
+  description: 'Open source projects and repositories.',
+}
 
 export default function ProjectsPage() {
   return (
@@ -18,5 +18,5 @@ export default function ProjectsPage() {
       </div>
       <ProjectsGrid />
     </section>
-  );
+  )
 }

@@ -1,34 +1,31 @@
-import { papers, researchInterests } from "@/data/papers";
-import { education } from "@/data/education";
-import { ArrowUpRight, BookOpen } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { ArrowUpRight, BookOpen } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { education } from '@/data/education'
+import { papers, researchInterests } from '@/data/papers'
 
 export const metadata = {
-  title: "Research",
-  description: "Research interests and publications.",
-};
+  title: 'Research',
+  description: 'Research interests and publications.',
+}
 
 function yearGroupLabel(year: number): string {
-  const currentYear = new Date().getFullYear();
-  const diff = currentYear - year;
-  if (diff === 0) return "Current";
-  return String(year);
+  const currentYear = new Date().getFullYear()
+  const diff = currentYear - year
+  if (diff === 0) return 'Current'
+  return String(year)
 }
 
 export default function ResearchPage() {
   // Group papers by year
-  const papersByYear = papers.reduce<Record<number, typeof papers>>(
-    (acc, paper) => {
-      if (!acc[paper.year]) acc[paper.year] = [];
-      acc[paper.year].push(paper);
-      return acc;
-    },
-    {},
-  );
+  const papersByYear = papers.reduce<Record<number, typeof papers>>((acc, paper) => {
+    if (!acc[paper.year]) acc[paper.year] = []
+    acc[paper.year].push(paper)
+    return acc
+  }, {})
   const years = Object.keys(papersByYear)
     .map(Number)
-    .sort((a, b) => b - a);
+    .sort((a, b) => b - a)
 
   return (
     <section className="py-8">
@@ -38,12 +35,11 @@ export default function ResearchPage() {
           Research
         </h1>
         <p className="text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-          My research focuses on making blockchain interoperability practical
-          and secure. I work on light client protocols, cross-chain
-          communication, and zero-knowledge proofs — technologies that enable
-          trust-minimized bridges between disparate networks. I believe the
-          future of Web3 depends on seamless, secure interoperability, and
-          I&apos;m committed to building the primitives that make it possible.
+          My research focuses on making blockchain interoperability practical and secure. I work on
+          light client protocols, cross-chain communication, and zero-knowledge proofs —
+          technologies that enable trust-minimized bridges between disparate networks. I believe the
+          future of Web3 depends on seamless, secure interoperability, and I&apos;m committed to
+          building the primitives that make it possible.
         </p>
       </div>
 
@@ -61,12 +57,8 @@ export default function ResearchPage() {
                 bg-[var(--card-bg)] shadow-sm
               "
             >
-              <p className="font-medium text-sm text-[var(--text-primary)]">
-                {interest.area}
-              </p>
-              <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                {interest.description}
-              </p>
+              <p className="font-medium text-sm text-[var(--text-primary)]">{interest.area}</p>
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5">{interest.description}</p>
             </div>
           ))}
         </div>
@@ -90,8 +82,7 @@ export default function ResearchPage() {
               Publications will appear here once added.
             </p>
             <p className="text-[var(--text-muted)] text-xs mt-1">
-              Edit <code className="text-xs">src/data/papers.ts</code> to add
-              your papers.
+              Edit <code className="text-xs">src/data/papers.ts</code> to add your papers.
             </p>
           </div>
         ) : (
@@ -112,15 +103,11 @@ export default function ResearchPage() {
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
-                          <h4 className="font-medium text-[var(--text-primary)]">
-                            {paper.title}
-                          </h4>
+                          <h4 className="font-medium text-[var(--text-primary)]">{paper.title}</h4>
                           <p className="text-sm text-[var(--text-secondary)] mt-1">
-                            {paper.authors.join(", ")}
+                            {paper.authors.join(', ')}
                           </p>
-                          <p className="text-xs text-[var(--text-muted)] mt-1">
-                            {paper.venue}
-                          </p>
+                          <p className="text-xs text-[var(--text-muted)] mt-1">{paper.venue}</p>
                           {paper.award && (
                             <span className="inline-block mt-2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
                               {paper.award}
@@ -222,15 +209,18 @@ export default function ResearchPage() {
                   <p className="font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors text-sm">
                     {item.degree}
                   </p>
-                  <p className="text-xs text-[var(--text-secondary)]">
-                    {item.institution}
-                  </p>
+                  <p className="text-xs text-[var(--text-secondary)]">{item.institution}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs font-mono text-[var(--text-muted)]">
-                      {new Date(item.startDate + "T00:00:00").toLocaleDateString("en-US", { year: "numeric" })} &ndash;{" "}
+                      {new Date(item.startDate + 'T00:00:00').toLocaleDateString('en-US', {
+                        year: 'numeric',
+                      })}{' '}
+                      &ndash;{' '}
                       {item.endDate
-                        ? new Date(item.endDate + "T00:00:00").toLocaleDateString("en-US", { year: "numeric" })
-                        : "Present"}
+                        ? new Date(item.endDate + 'T00:00:00').toLocaleDateString('en-US', {
+                            year: 'numeric',
+                          })
+                        : 'Present'}
                     </span>
                   </div>
                   {item.description && (
@@ -258,5 +248,5 @@ export default function ResearchPage() {
         </Link>
       </div>
     </section>
-  );
+  )
 }

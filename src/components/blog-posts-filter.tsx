@@ -1,44 +1,39 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import Link from "next/link";
-import { formatDate } from "@/lib/utils";
+import Link from 'next/link'
+import { useState } from 'react'
+import { formatDate } from '@/lib/utils'
 
 interface PostMetadata {
-  title: string;
-  publishedAt: string;
-  summary: string;
-  image?: string;
-  tags?: string[];
+  title: string
+  publishedAt: string
+  summary: string
+  image?: string
+  tags?: string[]
 }
 
 interface Post {
-  slug: string;
-  metadata: PostMetadata;
-  content: string;
+  slug: string
+  metadata: PostMetadata
+  content: string
 }
 
 interface BlogPostsFilterProps {
-  posts: Post[];
+  posts: Post[]
 }
 
 export default function BlogPostsFilter({ posts }: BlogPostsFilterProps) {
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null)
 
-  const allTags = Array.from(
-    new Set(posts.flatMap((p) => p.metadata.tags ?? [])),
-  ).sort();
+  const allTags = Array.from(new Set(posts.flatMap((p) => p.metadata.tags ?? []))).sort()
 
   const sorted = [...posts].sort(
     (a, b) =>
-      new Date(b.metadata.publishedAt).getTime() -
-      new Date(a.metadata.publishedAt).getTime(),
-  );
+      new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime(),
+  )
 
   const filtered =
-    selectedTag == null
-      ? sorted
-      : sorted.filter((p) => p.metadata.tags?.includes(selectedTag));
+    selectedTag == null ? sorted : sorted.filter((p) => p.metadata.tags?.includes(selectedTag))
 
   return (
     <div>
@@ -49,11 +44,11 @@ export default function BlogPostsFilter({ posts }: BlogPostsFilterProps) {
             type="button"
             onClick={() => setSelectedTag(null)}
             className={[
-              "px-3 py-1 rounded-full text-xs font-medium border transition-all",
+              'px-3 py-1 rounded-full text-xs font-medium border transition-all',
               selectedTag === null
-                ? "bg-[var(--accent)] text-white border-[var(--accent)]"
-                : "border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--text-muted)]",
-            ].join(" ")}
+                ? 'bg-[var(--accent)] text-white border-[var(--accent)]'
+                : 'border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--text-muted)]',
+            ].join(' ')}
           >
             All
           </button>
@@ -63,11 +58,11 @@ export default function BlogPostsFilter({ posts }: BlogPostsFilterProps) {
               type="button"
               onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
               className={[
-                "px-3 py-1 rounded-full text-xs font-medium border transition-all",
+                'px-3 py-1 rounded-full text-xs font-medium border transition-all',
                 selectedTag === tag
-                  ? "bg-[var(--accent)] text-white border-[var(--accent)]"
-                  : "border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--text-muted)]",
-              ].join(" ")}
+                  ? 'bg-[var(--accent)] text-white border-[var(--accent)]'
+                  : 'border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--text-muted)]',
+              ].join(' ')}
             >
               {tag}
             </button>
@@ -115,11 +110,11 @@ export default function BlogPostsFilter({ posts }: BlogPostsFilterProps) {
                     <span
                       key={tag}
                       className={[
-                        "px-2 py-0.5 text-[10px] font-medium rounded-full border transition-colors",
+                        'px-2 py-0.5 text-[10px] font-medium rounded-full border transition-colors',
                         tag === selectedTag
-                          ? "bg-[var(--accent)] text-white border-[var(--accent)]"
-                          : "bg-[var(--accent-light)] text-[var(--accent)] border-[var(--accent)]/20",
-                      ].join(" ")}
+                          ? 'bg-[var(--accent)] text-white border-[var(--accent)]'
+                          : 'bg-[var(--accent-light)] text-[var(--accent)] border-[var(--accent)]/20',
+                      ].join(' ')}
                     >
                       {tag}
                     </span>
@@ -131,5 +126,5 @@ export default function BlogPostsFilter({ posts }: BlogPostsFilterProps) {
         </div>
       )}
     </div>
-  );
+  )
 }

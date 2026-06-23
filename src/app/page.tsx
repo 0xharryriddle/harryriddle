@@ -1,8 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
-import { BlogPosts } from "@/components/posts";
-import DualViewSection from "@/components/dual-view";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import DualViewSection from '@/components/dual-view'
+import { BlogPosts } from '@/components/posts'
 
 export default function Home() {
   return (
@@ -32,13 +32,11 @@ export default function Home() {
         </div>
 
         <p className="text-[var(--text-secondary)] leading-relaxed max-w-2xl mb-5">
-          I&apos;m a blockchain researcher and software engineer from Vietnam.
-          My work sits at the intersection of decentralized systems and
-          practical engineering — building light clients for Substrate-based
-          chains, exploring zero-knowledge proofs, and shipping production
-          applications. I recently completed my B.S. at the University of
-          Information Technology (UIT), where my focus was on Web3 and
-          cross-chain technologies.
+          I&apos;m a blockchain researcher and software engineer from Vietnam. My work sits at the
+          intersection of decentralized systems and practical engineering — building light clients
+          for Substrate-based chains, exploring zero-knowledge proofs, and shipping production
+          applications. I recently completed my B.S. at the University of Information Technology
+          (UIT), where my focus was on Web3 and cross-chain technologies.
         </p>
 
         <div className="flex flex-wrap items-center gap-3">
@@ -123,5 +121,5 @@ export default function Home() {
         <BlogPosts limit={5} />
       </div>
     </section>
-  );
+  )
 }

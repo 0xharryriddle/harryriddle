@@ -5,41 +5,41 @@
  * Each entry can include links to the paper, code, and project page.
  */
 export interface Paper {
-  title: string;
-  authors: string[];
-  venue: string;
-  year: number;
-  url?: string;
-  codeUrl?: string;
-  projectUrl?: string;
-  preprintUrl?: string;
-  tags: string[];
-  description?: string;
-  award?: string;
+  title: string
+  authors: string[]
+  venue: string
+  year: number
+  url?: string
+  codeUrl?: string
+  projectUrl?: string
+  preprintUrl?: string
+  tags: string[]
+  description?: string
+  award?: string
 }
 
 export type ResearchInterest = {
-  area: string;
-  description: string;
-};
+  area: string
+  description: string
+}
 
 export const researchInterests: ResearchInterest[] = [
   {
-    area: "Blockchain Interoperability",
+    area: 'Blockchain Interoperability',
     description:
-      "Designing light client protocols and trust-minimized bridges for cross-chain communication in heterogeneous blockchain ecosystems",
+      'Designing light client protocols and trust-minimized bridges for cross-chain communication in heterogeneous blockchain ecosystems',
   },
   {
-    area: "Zero-Knowledge Proofs",
+    area: 'Zero-Knowledge Proofs',
     description:
-      "Applying ZK-SNARKs and ZK-STARKs to privacy-preserving transactions, identity, and scalable verification in decentralized networks",
+      'Applying ZK-SNARKs and ZK-STARKs to privacy-preserving transactions, identity, and scalable verification in decentralized networks',
   },
   {
-    area: "Decentralized Systems",
+    area: 'Decentralized Systems',
     description:
-      "Building resilient peer-to-peer networks, studying consensus mechanisms, and engineering fault-tolerant distributed applications",
+      'Building resilient peer-to-peer networks, studying consensus mechanisms, and engineering fault-tolerant distributed applications',
   },
-];
+]
 
 export const papers: Paper[] = [
   // Add your publications here:
@@ -54,4 +54,4 @@ export const papers: Paper[] = [
   //   tags: ["Blockchain", "Light Client"],
   //   description: "Brief description of the paper contribution.",
   // },
-];
+]

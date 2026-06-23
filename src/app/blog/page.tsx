@@ -1,14 +1,14 @@
-import { BlogPosts } from "@/components/posts";
-import BlogPostsFilter from "@/components/blog-posts-filter";
-import { getBlogPosts } from "@/app/blog/utils";
+import { getBlogPosts } from '@/app/blog/utils'
+import BlogPostsFilter from '@/components/blog-posts-filter'
+import { BlogPosts } from '@/components/posts'
 
 export const metadata = {
-  title: "Blog",
-  description: "Read my blog posts.",
-};
+  title: 'Blog',
+  description: 'Read my blog posts.',
+}
 
 export default function BlogPage() {
-  const posts = getBlogPosts();
+  const posts = getBlogPosts()
 
   return (
     <section className="py-8">
@@ -17,13 +17,12 @@ export default function BlogPage() {
           Blog
         </h1>
         <p className="text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-          Writing about blockchain infrastructure, light clients, Web3
-          development, and the things I&apos;m building and learning. Some of
-          these posts are deeply technical; others are just interesting things
-          I came across.
+          Writing about blockchain infrastructure, light clients, Web3 development, and the things
+          I&apos;m building and learning. Some of these posts are deeply technical; others are just
+          interesting things I came across.
         </p>
       </div>
       <BlogPostsFilter posts={posts} />
     </section>
-  );
+  )
 }
