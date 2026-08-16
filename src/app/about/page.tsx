@@ -15,7 +15,7 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <section className="py-8 space-y-10">
+    <section className="mx-auto max-w-3xl space-y-10 py-8">
       {/* Bio */}
       <div>
         <div className="flex items-start gap-5 mb-5">

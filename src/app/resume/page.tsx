@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function ResumePage() {
   return (
-    <section className="py-8">
+    <section className="mx-auto max-w-3xl py-8">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold tracking-tight text-[var(--text-primary)] mb-3">
           Resume / CV

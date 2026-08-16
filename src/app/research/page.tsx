@@ -1,252 +1,201 @@
-import { ArrowUpRight, BookOpen } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { education } from '@/data/education'
 import { papers, researchInterests } from '@/data/papers'
 
 export const metadata = {
   title: 'Research',
-  description: 'Research interests and publications.',
+  description:
+    'Research questions, technical notes, and ongoing work on verifiable decentralized systems.',
 }
 
-function yearGroupLabel(year: number): string {
-  const currentYear = new Date().getFullYear()
-  const diff = currentYear - year
-  if (diff === 0) return 'Current'
-  return String(year)
+const currentWork = [
+  {
+    index: '01',
+    title: 'How a Polkadot light client verifies the chain',
+    kind: 'Technical study',
+    description:
+      'A source-led investigation of Smoldot’s networking, synchronization, GRANDPA finality, BABE block production, and the chain information required to verify state.',
+    href: '/blog/light-client-polkadot',
+  },
+  {
+    index: '02',
+    title: 'Integrating a light client into a Polkadot application',
+    kind: 'Implementation note',
+    description:
+      'A practical path from chain specifications to Substrate Connect, Dedot, application context, and browser-side chain interaction.',
+    href: '/blog/integrate-light-client-polkadot',
+  },
+  {
+    index: '03',
+    title: 'Voting escrow over an in-browser light client',
+    kind: 'Prototype',
+    description:
+      'A public implementation that connects account, transfer, staking, and voting surfaces to a Substrate-based chain through a local light client.',
+    href: '/projects',
+  },
+]
+
+function formatYear(date: string | null): string {
+  return date ? String(new Date(`${date}T00:00:00`).getFullYear()) : 'Present'
 }
 
 export default function ResearchPage() {
-  // Group papers by year
-  const papersByYear = papers.reduce<Record<number, typeof papers>>((acc, paper) => {
-    if (!acc[paper.year]) acc[paper.year] = []
-    acc[paper.year].push(paper)
-    return acc
+  const papersByYear = papers.reduce<Record<number, typeof papers>>((groups, paper) => {
+    if (!groups[paper.year]) groups[paper.year] = []
+    groups[paper.year].push(paper)
+    return groups
   }, {})
-  const years = Object.keys(papersByYear)
+  const publicationYears = Object.keys(papersByYear)
     .map(Number)
     .sort((a, b) => b - a)
 
   return (
-    <section className="py-8">
-      {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-2xl font-semibold tracking-tight text-[var(--text-primary)] mb-3">
-          Research
-        </h1>
-        <p className="text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-          My research focuses on making blockchain interoperability practical and secure. I work on
-          light client protocols, cross-chain communication, and zero-knowledge proofs —
-          technologies that enable trust-minimized bridges between disparate networks. I believe the
-          future of Web3 depends on seamless, secure interoperability, and I&apos;m committed to
-          building the primitives that make it possible.
+    <section className="mx-auto max-w-3xl pb-8 pt-16 sm:pt-24">
+      <header className="mb-20 max-w-2xl sm:mb-28">
+        <p className="mb-5 font-mono text-xs text-[var(--text-muted)]">
+          Verification · Interoperability · Distributed systems
         </p>
-      </div>
+        <h1 className="max-w-[16ch] text-4xl font-medium leading-[1.08] tracking-[-0.035em] text-[var(--text-primary)] sm:text-5xl">
+          Research should make a system easier to verify, not merely easier to describe.
+        </h1>
+        <p className="mt-8 text-lg leading-8 text-[var(--text-secondary)]">
+          I study how decentralized applications can preserve the trust model of the protocols
+          beneath them. My current work centers on light clients, cross-chain verification, and the
+          boundary between a protocol claim and the software that demonstrates it.
+        </p>
+      </header>
 
-      {/* Research Interests */}
-      <div className="mb-12">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-4">
-          Research Interests
-        </h2>
-        <div className="flex flex-wrap gap-2">
-          {researchInterests.map((interest) => (
-            <div
-              key={interest.area}
-              className="
-                px-4 py-2 rounded-lg border border-[var(--border)]
-                bg-[var(--card-bg)] shadow-sm
-              "
-            >
-              <p className="font-medium text-sm text-[var(--text-primary)]">{interest.area}</p>
-              <p className="text-xs text-[var(--text-secondary)] mt-0.5">{interest.description}</p>
-            </div>
+      <section className="mb-24 sm:mb-32" aria-labelledby="questions-title">
+        <div className="section-heading">
+          <h2 id="questions-title">Research questions</h2>
+        </div>
+        <div className="divide-y divide-[var(--border)] border-b border-[var(--border)]">
+          {researchInterests.map((interest, index) => (
+            <article key={interest.area} className="grid gap-4 py-7 sm:grid-cols-[3rem_11rem_1fr]">
+              <p className="font-mono text-xs text-[var(--text-muted)]">
+                {String(index + 1).padStart(2, '0')}
+              </p>
+              <h3 className="font-medium tracking-tight text-[var(--text-primary)]">
+                {interest.area}
+              </h3>
+              <p className="leading-7 text-[var(--text-secondary)]">{interest.description}.</p>
+            </article>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Publications */}
-      <div>
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-4">
-          Publications
-        </h2>
+      <section className="mb-24 sm:mb-32" aria-labelledby="current-work-title">
+        <div className="section-heading">
+          <h2 id="current-work-title">Current work</h2>
+          <Link href="/projects">Experiments →</Link>
+        </div>
+        <div className="divide-y divide-[var(--border)] border-b border-[var(--border)]">
+          {currentWork.map((work) => (
+            <Link
+              key={work.index}
+              href={work.href}
+              className="group grid gap-4 py-7 sm:grid-cols-[3rem_1fr_9rem]"
+            >
+              <p className="font-mono text-xs text-[var(--text-muted)]">{work.index}</p>
+              <div>
+                <h3 className="font-medium tracking-tight text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent)]">
+                  {work.title} <span aria-hidden="true">→</span>
+                </h3>
+                <p className="mt-2 leading-7 text-[var(--text-secondary)]">{work.description}</p>
+              </div>
+              <p className="font-mono text-xs text-[var(--text-muted)] sm:text-right">{work.kind}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
 
+      <section className="mb-24 sm:mb-32" aria-labelledby="publications-title">
+        <div className="section-heading">
+          <h2 id="publications-title">Publications</h2>
+        </div>
         {papers.length === 0 ? (
-          <div
-            className="
-              p-10 rounded-xl border border-dashed border-[var(--border)]
-              text-center
-            "
-          >
-            <BookOpen className="w-10 h-10 mx-auto mb-3 text-[var(--text-muted)]" />
-            <p className="text-[var(--text-secondary)] text-sm">
-              Publications will appear here once added.
-            </p>
-            <p className="text-[var(--text-muted)] text-xs mt-1">
-              Edit <code className="text-xs">src/data/papers.ts</code> to add your papers.
+          <div className="max-w-2xl border-b border-[var(--border)] pb-8">
+            <p className="leading-7 text-[var(--text-secondary)]">
+              I do not have a formal publication to list yet. Until that changes, I publish the
+              technical notes and implementations above with their assumptions and current limits
+              visible.
             </p>
           </div>
         ) : (
-          <div className="space-y-8">
-            {years.map((year) => (
-              <div key={year}>
-                <h3 className="text-lg font-semibold tracking-tight text-[var(--text-primary)] mb-4">
-                  {yearGroupLabel(year)}
-                </h3>
-                <div className="space-y-4">
-                  {papersByYear[year].map((paper, idx) => (
-                    <div
-                      key={idx}
-                      className="
-                        p-5 rounded-xl border border-[var(--border)]
-                        bg-[var(--card-bg)] shadow-sm
-                      "
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="min-w-0">
-                          <h4 className="font-medium text-[var(--text-primary)]">{paper.title}</h4>
-                          <p className="text-sm text-[var(--text-secondary)] mt-1">
-                            {paper.authors.join(', ')}
-                          </p>
-                          <p className="text-xs text-[var(--text-muted)] mt-1">{paper.venue}</p>
-                          {paper.award && (
-                            <span className="inline-block mt-2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
-                              {paper.award}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap items-center gap-3 mt-3">
-                        {paper.url && (
-                          <a
-                            href={paper.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="
-                              inline-flex items-center gap-1 text-xs font-medium
-                              text-[var(--accent)] hover:text-[var(--accent-hover)]
-                              transition-colors
-                            "
-                          >
-                            Paper <ArrowUpRight className="w-3 h-3" />
-                          </a>
-                        )}
-                        {paper.codeUrl && (
-                          <a
-                            href={paper.codeUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="
-                              inline-flex items-center gap-1 text-xs font-medium
-                              text-[var(--text-secondary)] hover:text-[var(--text-primary)]
-                              transition-colors
-                            "
-                          >
-                            Code <ArrowUpRight className="w-3 h-3" />
-                          </a>
-                        )}
-                        {paper.projectUrl && (
-                          <a
-                            href={paper.projectUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="
-                              inline-flex items-center gap-1 text-xs font-medium
-                              text-[var(--text-secondary)] hover:text-[var(--text-primary)]
-                              transition-colors
-                            "
-                          >
-                            Project Page <ArrowUpRight className="w-3 h-3" />
-                          </a>
-                        )}
-                      </div>
-                      {paper.description && (
-                        <p className="text-xs text-[var(--text-secondary)] mt-3 leading-relaxed">
-                          {paper.description}
-                        </p>
+          <div className="divide-y divide-[var(--border)] border-b border-[var(--border)]">
+            {publicationYears.flatMap((year) =>
+              papersByYear[year].map((paper) => (
+                <article key={`${year}-${paper.title}`} className="grid gap-4 py-7 sm:grid-cols-[5rem_1fr]">
+                  <p className="font-mono text-xs text-[var(--text-muted)]">{year}</p>
+                  <div>
+                    <h3 className="font-medium tracking-tight text-[var(--text-primary)]">
+                      {paper.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-[var(--text-secondary)]">
+                      {paper.authors.join(', ')} · {paper.venue}
+                    </p>
+                    {paper.description && (
+                      <p className="mt-3 leading-7 text-[var(--text-secondary)]">
+                        {paper.description}
+                      </p>
+                    )}
+                    <div className="mt-4 flex flex-wrap gap-5 text-sm">
+                      {paper.url && (
+                        <a className="editorial-link" href={paper.url}>
+                          Paper ↗
+                        </a>
+                      )}
+                      {paper.preprintUrl && (
+                        <a className="editorial-link" href={paper.preprintUrl}>
+                          Preprint ↗
+                        </a>
+                      )}
+                      {paper.codeUrl && (
+                        <a className="editorial-link" href={paper.codeUrl}>
+                          Code ↗
+                        </a>
+                      )}
+                      {paper.projectUrl && (
+                        <a className="editorial-link" href={paper.projectUrl}>
+                          Project ↗
+                        </a>
                       )}
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+                  </div>
+                </article>
+              )),
+            )}
           </div>
         )}
-      </div>
+      </section>
 
-      {/* Education */}
-      <div className="mt-14">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-4">
-          Academic Background
-        </h2>
-        <div className="space-y-4">
+      <section aria-labelledby="background-title">
+        <div className="section-heading">
+          <h2 id="background-title">Academic background</h2>
+        </div>
+        <div className="divide-y divide-[var(--border)] border-b border-[var(--border)]">
           {education.map((item) => (
             <a
               key={item.id}
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block"
+              className="group grid gap-4 py-7 sm:grid-cols-[8rem_1fr]"
             >
-              <div className="flex items-start gap-4 p-4 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] shadow-sm hover:shadow-md transition-shadow">
-                {item.logo ? (
-                  <div className="w-11 h-11 rounded-lg overflow-hidden bg-white dark:bg-neutral-800 flex items-center justify-center border border-[var(--border)] shrink-0">
-                    <Image
-                      src={item.logo}
-                      alt={item.institution}
-                      width={36}
-                      height={36}
-                      className="object-contain"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-neutral-100 to-neutral-200 dark:from-neutral-800 dark:to-neutral-700 flex items-center justify-center border border-[var(--border)] shrink-0">
-                    <span className="text-base font-bold text-[var(--text-secondary)]">
-                      {item.institution.charAt(0)}
-                    </span>
-                  </div>
-                )}
-                <div className="min-w-0">
-                  <p className="font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors text-sm">
-                    {item.degree}
-                  </p>
-                  <p className="text-xs text-[var(--text-secondary)]">{item.institution}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs font-mono text-[var(--text-muted)]">
-                      {new Date(item.startDate + 'T00:00:00').toLocaleDateString('en-US', {
-                        year: 'numeric',
-                      })}{' '}
-                      &ndash;{' '}
-                      {item.endDate
-                        ? new Date(item.endDate + 'T00:00:00').toLocaleDateString('en-US', {
-                            year: 'numeric',
-                          })
-                        : 'Present'}
-                    </span>
-                  </div>
-                  {item.description && (
-                    <p className="text-xs text-[var(--text-secondary)] mt-1.5 leading-relaxed">
-                      {item.description}
-                    </p>
-                  )}
-                </div>
+              <p className="font-mono text-xs text-[var(--text-muted)]">
+                {formatYear(item.startDate)}–{formatYear(item.endDate)}
+              </p>
+              <div>
+                <h3 className="font-medium tracking-tight text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent)]">
+                  {item.degree} ↗
+                </h3>
+                <p className="mt-1 text-sm text-[var(--text-secondary)]">{item.institution}</p>
+                <p className="mt-3 leading-7 text-[var(--text-secondary)]">{item.description}</p>
               </div>
             </a>
           ))}
         </div>
-      </div>
-
-      <div className="mt-8">
-        <Link
-          href="/"
-          className="
-            inline-flex items-center gap-1.5 text-sm
-            text-[var(--text-secondary)] hover:text-[var(--text-primary)]
-            transition-colors
-          "
-        >
-          &larr; Back to home
-        </Link>
-      </div>
+      </section>
     </section>
   )
 }

@@ -40,8 +40,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body className="antialiased">
         <Navbar />
-        <main className="pt-20 pb-16 min-h-screen">
-          <div className="max-w-3xl mx-auto px-6 animate-fade-in">{children}</div>
+        <main className="min-h-screen pb-16">
+          <div className="mx-auto max-w-6xl px-6 animate-fade-in lg:px-10">{children}</div>
         </main>
         <Footer />
       </body>

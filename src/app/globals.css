@@ -4,17 +4,20 @@
 
 /* ─── Professional Design Tokens ─── */
 :root {
-  --bg-primary: #fafafa;
-  --bg-secondary: #ffffff;
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
-  --accent: #2563eb;
-  --accent-light: #dbeafe;
-  --accent-hover: #1d4ed8;
-  --border: #e5e7eb;
-  --card-bg: #ffffff;
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --bg-primary: #fbfaf7;
+  --bg-secondary: #fbfaf7;
+  --text-primary: #171717;
+  --text-secondary: #3d3c38;
+  --text-muted: #716f69;
+  --accent: #8c3b2a;
+  --accent-light: #f3e9e4;
+  --accent-hover: #6f2d20;
+  --border: #dedbd3;
+  --card-bg: #fbfaf7;
+  --card-shadow: none;
+  --note-bg: #e7eee9;
+  --note-text: #42614d;
+  --note-ink: #243b2c;
 
   --sh-class: #2d5e9d;
   --sh-identifier: #354150;
@@ -29,17 +32,20 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-primary: #0a0a0a;
-    --bg-secondary: #111111;
-    --text-primary: #f9fafb;
-    --text-secondary: #9ca3af;
-    --text-muted: #6b7280;
-    --accent: #3b82f6;
-    --accent-light: #1e3a5f;
-    --accent-hover: #60a5fa;
-    --border: #1f2937;
-    --card-bg: #111111;
-    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --bg-primary: #171715;
+    --bg-secondary: #171715;
+    --text-primary: #f1efe9;
+    --text-secondary: #c3c0b8;
+    --text-muted: #8f8c84;
+    --accent: #d98b73;
+    --accent-light: #3a2721;
+    --accent-hover: #e7a38e;
+    --border: #373630;
+    --card-bg: #171715;
+    --card-shadow: none;
+    --note-bg: #24352a;
+    --note-text: #9fc0a8;
+    --note-ink: #e7f0e9;
 
     --sh-class: #4c97f8;
     --sh-identifier: #c8d3de;
@@ -68,26 +74,47 @@ body {
   color: var(--text-primary);
 }
 
-/* ─── Subtle Background Pattern ─── */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(37, 99, 235, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(99, 102, 241, 0.03) 0%, transparent 50%);
+.font-editorial {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-optical-sizing: auto;
 }
 
-@media (prefers-color-scheme: dark) {
-  body::before {
-    background:
-      radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.07) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
-  }
+.editorial-link {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 160ms ease, color 160ms ease;
+}
+
+.editorial-link:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.65rem;
+  font-size: 0.875rem;
+}
+
+.section-heading h2 {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.section-heading a {
+  color: var(--text-muted);
+  transition: color 160ms ease;
+}
+
+.section-heading a:hover {
+  color: var(--text-primary);
 }
 
 /* ─── Prose / Article Styles ─── */
@@ -188,8 +215,9 @@ body::before {
 }
 
 .prose p {
-  @apply my-4;
+  @apply my-5;
   color: var(--text-primary);
+  line-height: 1.8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -199,15 +227,15 @@ body::before {
 }
 
 .prose h1 {
-  @apply text-3xl font-semibold tracking-tight mt-8 mb-3;
+  @apply text-3xl font-medium tracking-tight mt-12 mb-4;
 }
 
 .prose h2 {
-  @apply text-xl font-semibold tracking-tight mt-8 mb-3;
+  @apply text-2xl font-medium tracking-tight mt-12 mb-4;
 }
 
 .prose h3 {
-  @apply text-lg font-semibold tracking-tight mt-6 mb-2;
+  @apply text-xl font-medium tracking-tight mt-10 mb-3;
 }
 
 .prose h4 {
@@ -227,7 +255,8 @@ body::before {
 }
 
 .prose li {
-  @apply my-1;
+  @apply my-2;
+  line-height: 1.75;
 }
 
 .prose blockquote {

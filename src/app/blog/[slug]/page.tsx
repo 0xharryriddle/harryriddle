@@ -1,4 +1,3 @@
-import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { formatDate, getBlogPosts } from '@/app/blog/utils'
@@ -47,7 +46,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <section className="py-8">
+    <section className="mx-auto max-w-3xl pb-8 pt-10 sm:pt-16">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -71,44 +70,37 @@ export default function Blog({ params }: { params: { slug: string } }) {
         }}
       />
 
-      {/* Back link */}
       <Link
         href="/blog"
-        className="inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors mb-8"
+        className="editorial-link text-sm"
       >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Back to blog
+        ← Writing
       </Link>
 
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="title font-semibold text-3xl tracking-tight text-[var(--text-primary)] mb-3">
+      <header className="mb-14 mt-14 border-b border-[var(--border)] pb-10 sm:mb-16 sm:mt-20 sm:pb-12">
+        <h1 className="title max-w-[18ch] text-4xl font-medium leading-[1.08] tracking-[-0.035em] text-[var(--text-primary)] sm:text-5xl">
           {post.metadata.title}
         </h1>
-
-        <div className="flex flex-wrap items-center gap-3 text-sm">
-          <time className="text-[var(--text-muted)]">{formatDate(post.metadata.publishedAt)}</time>
+        <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--text-secondary)]">
+          {post.metadata.summary}
+        </p>
+        <div className="mt-7 flex flex-col gap-3 font-mono text-xs text-[var(--text-muted)] sm:flex-row sm:items-center sm:justify-between">
+          <time>{formatDate(post.metadata.publishedAt)}</time>
+          {post.metadata.tags && post.metadata.tags.length > 0 && (
+            <p className="leading-6 sm:text-right">{post.metadata.tags.join(' · ')}</p>
+          )}
         </div>
+      </header>
 
-        {post.metadata.tags && post.metadata.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mt-4">
-            {post.metadata.tags.map((tag) => (
-              <Link
-                key={tag}
-                href={`/blog?tag=${encodeURIComponent(tag)}`}
-                className="px-2.5 py-1 text-xs font-medium rounded-full bg-[var(--accent-light)] text-[var(--accent)] border border-[var(--accent)]/20 hover:opacity-80 transition-opacity"
-              >
-                {tag}
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Article body */}
-      <article className="prose max-w-none">
+      <article className="prose max-w-[44rem]">
         <CustomMDX source={post.content} />
       </article>
+
+      <footer className="mt-20 border-t border-[var(--border)] pt-8">
+        <Link href="/blog" className="editorial-link text-sm">
+          ← More writing
+        </Link>
+      </footer>
     </section>
   )
 }
