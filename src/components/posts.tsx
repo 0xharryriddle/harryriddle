@@ -14,22 +14,20 @@ export function BlogPosts({ limit }: { limit?: number }) {
   const posts = limit ? sorted.slice(0, limit) : sorted
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col divide-y divide-[var(--border)] border-b border-[var(--border)]">
       {posts.map((post) => (
         <Link
           key={post.slug}
           className="
-            group flex items-start justify-between gap-4
-            py-3 -mx-3 px-3 rounded-lg
-            transition-colors duration-200
-            hover:bg-[var(--border)]/40
+            group grid gap-2 py-5 transition-colors duration-200
+            sm:grid-cols-[8.5rem_1fr] sm:items-baseline
           "
           href={`/blog/${post.slug}`}
         >
-          <p className="text-[var(--text-primary)] tracking-tight group-hover:text-[var(--accent)] transition-colors">
-            {post.metadata.title}
+          <p className="order-2 text-[var(--text-primary)] tracking-tight group-hover:text-[var(--accent)] transition-colors sm:order-2">
+            {post.metadata.title} <span aria-hidden="true">↗</span>
           </p>
-          <p className="text-xs text-[var(--text-muted)] tabular-nums shrink-0 pt-0.5">
+          <p className="order-1 font-mono text-xs text-[var(--text-muted)] tabular-nums sm:order-1">
             {formatDate(post.metadata.publishedAt, false)}
           </p>
         </Link>

@@ -4,11 +4,10 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const navItems = [
-  { path: '/', name: 'Home' },
   { path: '/research', name: 'Research' },
   { path: '/experience', name: 'Experience' },
-  { path: '/projects', name: 'Projects' },
-  { path: '/blog', name: 'Blog' },
+  { path: '/projects', name: 'Experiments' },
+  { path: '/blog', name: 'Writing' },
 ]
 
 export function Navbar() {
@@ -20,39 +19,33 @@ export function Navbar() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <nav
-        className="
-          mx-auto
-          border-b border-[var(--border)]
-          bg-[var(--bg-secondary)]/80
-          backdrop-blur-xl
-        "
-      >
-        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+    <header className="relative z-50">
+      <nav className="mx-auto bg-[var(--bg-primary)]">
+        <div className="mx-auto flex h-[4.5rem] max-w-6xl items-center justify-between gap-4 border-b border-[var(--border)] px-4 sm:px-6 lg:px-10">
           <Link
             href="/"
             className="
-              font-mono text-sm font-semibold tracking-tight
+              shrink-0 font-mono text-[10px] font-medium uppercase tracking-[0.06em] sm:text-[11px] sm:tracking-[0.08em]
               text-[var(--text-primary)]
               hover:text-[var(--text-secondary)]
               transition-colors
             "
           >
-            Nguyen Thai Cong
+            <span className="sm:hidden">0xHR / notes</span>
+            <span className="hidden sm:inline">0xharryriddle / protocol notes</span>
           </Link>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-3 sm:gap-7">
             {navItems.map(({ path, name }) => (
               <Link
                 key={path}
                 href={path}
                 className={`
-                  px-3 py-1.5 rounded-lg text-sm transition-all duration-200
+                  -my-3 whitespace-nowrap py-3 text-[10px] transition-colors duration-200 sm:text-xs
                   ${
                     isActive(path)
-                      ? 'bg-[var(--accent)] text-white font-medium'
-                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border)]/40'
+                      ? 'text-[var(--text-primary)] font-medium'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                   }
                 `}
               >

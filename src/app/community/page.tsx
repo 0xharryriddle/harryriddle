@@ -32,7 +32,7 @@ export default function CommunityPage() {
   const tutorials = getTutorials()
 
   return (
-    <section className="py-8 space-y-10">
+    <section className="mx-auto max-w-3xl space-y-10 py-8">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-[var(--text-primary)] mb-3">
