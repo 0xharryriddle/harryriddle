@@ -1,11 +1,26 @@
 import Link from 'next/link'
 import { formatDate, getBlogPosts } from '@/app/blog/utils'
+import { getBlogPostsFromNotion } from '@/lib/notion'
 
-export function BlogPosts({ limit }: { limit?: number }) {
-  const allBlogs = getBlogPosts()
+export async function BlogPosts({ limit }: { limit?: number }) {
+  const notionPosts = await getBlogPostsFromNotion().catch(() => [])
+  const staticPosts = getBlogPosts()
 
-  const sorted = allBlogs.sort((a, b) => {
-    if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
+  const allPosts =
+    notionPosts.length > 0
+      ? notionPosts.map((post) => ({
+          slug: post.slug,
+          title: post.title,
+          publishedAt: post.publishedAt,
+        }))
+      : staticPosts.map((post) => ({
+          slug: post.slug,
+          title: post.metadata.title,
+          publishedAt: post.metadata.publishedAt,
+        }))
+
+  const sorted = allPosts.sort((a, b) => {
+    if (new Date(a.publishedAt) > new Date(b.publishedAt)) {
       return -1
     }
     return 1
@@ -25,10 +40,10 @@ export function BlogPosts({ limit }: { limit?: number }) {
           href={`/blog/${post.slug}`}
         >
           <p className="order-2 text-[var(--text-primary)] tracking-tight group-hover:text-[var(--accent)] transition-colors sm:order-2">
-            {post.metadata.title} <span aria-hidden="true">↗</span>
+            {post.title} <span aria-hidden="true">↗</span>
           </p>
           <p className="order-1 font-mono text-xs text-[var(--text-muted)] tabular-nums sm:order-1">
-            {formatDate(post.metadata.publishedAt, false)}
+            {formatDate(post.publishedAt, false)}
           </p>
         </Link>
       ))}

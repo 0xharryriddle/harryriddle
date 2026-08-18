@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { education } from '@/data/education'
 import { papers, researchInterests } from '@/data/papers'
+import { getExperienceFromNotion } from '@/lib/notion'
 
 export const metadata = {
   title: 'Research',
@@ -39,7 +40,7 @@ function formatYear(date: string | null): string {
   return date ? String(new Date(`${date}T00:00:00`).getFullYear()) : 'Present'
 }
 
-export default function ResearchPage() {
+export default async function ResearchPage() {
   const papersByYear = papers.reduce<Record<number, typeof papers>>((groups, paper) => {
     if (!groups[paper.year]) groups[paper.year] = []
     groups[paper.year].push(paper)
@@ -48,6 +49,21 @@ export default function ResearchPage() {
   const publicationYears = Object.keys(papersByYear)
     .map(Number)
     .sort((a, b) => b - a)
+
+  const notionEducation = (await getExperienceFromNotion().catch(() => [])).filter(
+    (entry) => entry.kind === 'Education',
+  )
+  const educationEntries = notionEducation.length
+    ? notionEducation.map((entry) => ({
+        id: entry.organization,
+        degree: entry.title,
+        institution: entry.organization,
+        startDate: entry.startDate,
+        endDate: entry.endDate,
+        description: entry.description,
+        url: entry.href,
+      }))
+    : education
 
   return (
     <section className="mx-auto max-w-3xl pb-8 pt-16 sm:pt-24">
@@ -174,7 +190,7 @@ export default function ResearchPage() {
           <h2 id="background-title">Academic background</h2>
         </div>
         <div className="divide-y divide-[var(--border)] border-b border-[var(--border)]">
-          {education.map((item) => (
+          {educationEntries.map((item) => (
             <a
               key={item.id}
               href={item.url}

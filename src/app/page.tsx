@@ -3,9 +3,10 @@ import { companies } from '@/data/companies'
 import { education } from '@/data/education'
 import { BlogPosts } from '@/components/posts'
 import {
-  getExperimentsFromNotion,
-  getOpenSourceWorkFromNotion,
   getCompetitiveWorkFromNotion,
+  getExperimentsFromNotion,
+  getExperienceFromNotion,
+  getOpenSourceWorkFromNotion,
 } from '@/lib/notion'
 import { experiments as staticExperiments } from '@/data/experiments'
 import { openSourceWork as staticOss } from '@/data/openSourceWork'
@@ -18,20 +19,24 @@ const destinations = [
   { label: 'Writing', detail: 'Technical notes from the workbench', href: '/blog' },
 ]
 
-const experienceSnapshot = [
+const staticExperience = [
   ...companies.map((entry) => ({
-    kind: entry.role === 'Blockchain Developer Student' ? 'Training' : 'Work',
+    kind: (entry.role === 'Blockchain Developer Student' ? 'Training' : 'Work') as
+      | 'Work'
+      | 'Training',
     title: entry.role,
     organization: entry.name,
-    period: formatPeriod(entry.startDate, entry.endDate),
+    startDate: entry.startDate,
+    endDate: entry.endDate,
     description: entry.description,
     href: entry.url,
   })),
   ...education.map((entry) => ({
-    kind: 'Education',
+    kind: 'Education' as const,
     title: entry.degree,
     organization: entry.institution,
-    period: formatPeriod(entry.startDate, entry.endDate),
+    startDate: entry.startDate,
+    endDate: entry.endDate,
     description: entry.description,
     href: entry.url,
   })),
@@ -45,15 +50,17 @@ function formatPeriod(startDate: string, endDate: string | null): string {
 
 export default async function Home() {
   // Fetch from Notion with static fallback
-  const [notionExperiments, notionOss, notionComp] = await Promise.all([
+  const [notionExperiments, notionOss, notionComp, notionExperience] = await Promise.all([
     getExperimentsFromNotion().catch(() => []),
     getOpenSourceWorkFromNotion().catch(() => []),
     getCompetitiveWorkFromNotion().catch(() => []),
+    getExperienceFromNotion().catch(() => []),
   ])
 
   const experiments = notionExperiments.length > 0 ? notionExperiments : staticExperiments
   const ossItems = notionOss.length > 0 ? notionOss : staticOss
   const compItems = notionComp.length > 0 ? notionComp : staticComp
+  const experienceItems = notionExperience.length > 0 ? notionExperience : staticExperience
 
   return (
     <section className="pb-10 pt-12 sm:pt-20">
@@ -107,7 +114,7 @@ export default async function Home() {
               Where I work, learn, and build.
             </h2>
             <div className="mt-9 border-b border-[var(--border)]">
-              {experienceSnapshot.map((entry) => (
+              {experienceItems.map((entry) => (
                 <Link
                   key={`${entry.kind}-${entry.organization}`}
                   href={entry.href}
@@ -119,7 +126,9 @@ export default async function Home() {
                     <span className="text-base font-medium group-hover:text-[var(--accent)] sm:text-lg">
                       {entry.title} · {entry.organization} ↗
                     </span>
-                    <span className="font-mono text-[10px] text-[var(--text-muted)]">{entry.period}</span>
+                    <span className="font-mono text-[10px] text-[var(--text-muted)]">
+                      {formatPeriod(entry.startDate, entry.endDate)}
+                    </span>
                   </span>
                   <span className="mt-2 block text-sm leading-6 text-[var(--text-secondary)]">
                     {entry.kind} · {entry.description}

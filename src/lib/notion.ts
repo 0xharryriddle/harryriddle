@@ -6,10 +6,14 @@ const NOTION_VERSION = '2025-09-03'
 //   experiments:      4db978d2-0b00-4738-8c5a-14862d2a4b9a -> d23ffb2b-7cfe-4866-b4a6-bddc4be754cd
 //   openSourceWork:   c3b8e95d-78cb-493e-8b91-8020f688cb40 -> f5e78b86-18f2-4f84-a009-e048ee0d6260
 //   competitiveWork:  2dca9915-9691-4e2d-b691-a2b450a9d702 -> 3e9494b8-b6d1-48fd-990c-7b91419e8809
+//   experience:       cd5a7444-17b4-4181-ade0-f79c468b8ad4 -> 3be591b2-6035-4e39-9779-e412a1fa6650
+//   blogPosts:        f53a8bc8-6c75-4321-bcac-e21b15bffe5a -> 80c49849-d0e0-43e1-8e38-ef560fc22401
 const DATA_SOURCE_IDS = {
   experiments: 'd23ffb2b-7cfe-4866-b4a6-bddc4be754cd',
   openSourceWork: 'f5e78b86-18f2-4f84-a009-e048ee0d6260',
   competitiveWork: '3e9494b8-b6d1-48fd-990c-7b91419e8809',
+  experience: '3be591b2-6035-4e39-9779-e412a1fa6650',
+  blogPosts: '80c49849-d0e0-43e1-8e38-ef560fc22401',
 } as const
 
 interface NotionRichText {
@@ -41,6 +45,13 @@ interface NotionPageProperties {
   Year?: { number: number | null }
   Role?: { rich_text: NotionRichText[] }
   Result?: { rich_text: NotionRichText[] }
+  Kind?: { select: NotionSelectOption | null }
+  Organization?: { rich_text: NotionRichText[] }
+  StartDate?: { date: { start: string } | null }
+  EndDate?: { date: { start: string } | null }
+  Highlights?: { rich_text: NotionRichText[] }
+  PublishedAt?: { date: { start: string } | null }
+  Image?: { url: string | null }
 }
 
 interface NotionPage {
@@ -162,4 +173,83 @@ export async function getCompetitiveWorkFromNotion(): Promise<NotionCompetitiveW
     description: getPlainText(page.properties.Description?.rich_text),
     href: page.properties.URL?.url || undefined,
   }))
+}
+
+// --- Experience (work / training / education) types & fetcher ---
+
+export interface NotionExperienceEntry {
+  kind: 'Work' | 'Training' | 'Education'
+  title: string
+  organization: string
+  startDate: string
+  endDate: string | null
+  description: string
+  highlights: string[]
+  href: string
+}
+
+export async function getExperienceFromNotion(): Promise<NotionExperienceEntry[]> {
+  const pages = await queryDataSource(DATA_SOURCE_IDS.experience)
+
+  return pages.map((page) => ({
+    kind: (page.properties.Kind?.select?.name as NotionExperienceEntry['kind']) ?? 'Work',
+    title: getPlainText(page.properties.Name?.title),
+    organization: getPlainText(page.properties.Organization?.rich_text),
+    startDate: page.properties.StartDate?.date?.start ?? '',
+    endDate: page.properties.EndDate?.date?.start ?? null,
+    description: getPlainText(page.properties.Description?.rich_text),
+    highlights: getPlainText(page.properties.Highlights?.rich_text)
+      .split(' / ')
+      .map((h) => h.trim())
+      .filter(Boolean),
+    href: page.properties.URL?.url ?? '',
+  }))
+}
+
+// --- Blog Posts types & fetcher ---
+
+export interface NotionBlogPost {
+  slug: string
+  title: string
+  publishedAt: string
+  summary: string
+  tags: string[]
+  image?: string
+  content: string
+}
+
+export async function getBlogPostsFromNotion(): Promise<NotionBlogPost[]> {
+  const pages = await queryDataSource(DATA_SOURCE_IDS.blogPosts)
+
+  return Promise.all(
+    pages.map(async (page) => {
+      const content = await fetchPageMarkdown(page.id)
+      return {
+        slug: getPlainText(page.properties.Slug?.rich_text),
+        title: getPlainText(page.properties.Name?.title),
+        publishedAt: page.properties.PublishedAt?.date?.start ?? '',
+        summary: getPlainText(page.properties.Summary?.rich_text),
+        tags: page.properties.Tags?.multi_select?.map((t) => t.name) ?? [],
+        image: page.properties.Image?.url || undefined,
+        content,
+      }
+    }),
+  )
+}
+
+async function fetchPageMarkdown(pageId: string): Promise<string> {
+  if (!NOTION_API_KEY) return ''
+
+  const response = await fetch(`https://api.notion.com/v1/pages/${pageId}/markdown`, {
+    headers: {
+      Authorization: `Bearer ${NOTION_API_KEY}`,
+      'Notion-Version': NOTION_VERSION,
+    },
+    next: { revalidate: 3600 },
+  })
+
+  if (!response.ok) return ''
+
+  const data: { markdown?: string } = await response.json()
+  return data.markdown ?? ''
 }
