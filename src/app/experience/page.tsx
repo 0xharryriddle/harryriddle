@@ -1,13 +1,11 @@
 import { companies } from '@/data/companies'
 import { education } from '@/data/education'
+import { getExperienceFromNotion, type NotionExperienceEntry } from '@/lib/notion'
 
 export const metadata = {
   title: 'Experience',
   description: 'Professional work, technical training, and the engineering practice behind it.',
 }
-
-const professionalWork = companies.filter((entry) => entry.role !== 'Blockchain Developer Student')
-const technicalTraining = companies.filter((entry) => entry.role === 'Blockchain Developer Student')
 
 const workingSet = [
   {
@@ -103,7 +101,40 @@ function TimelineEntry({
   )
 }
 
-export default function ExperiencePage() {
+export default async function ExperiencePage() {
+  const notionEntries = await getExperienceFromNotion().catch(() => [])
+
+  const entries: NotionExperienceEntry[] = notionEntries.length
+    ? notionEntries
+    : [
+        ...companies.map((entry) => ({
+          kind: (entry.role === 'Blockchain Developer Student'
+            ? 'Training'
+            : 'Work') as NotionExperienceEntry['kind'],
+          title: entry.role,
+          organization: entry.name,
+          startDate: entry.startDate,
+          endDate: entry.endDate,
+          description: entry.description,
+          highlights: entry.highlights,
+          href: entry.url,
+        })),
+        ...education.map((entry) => ({
+          kind: 'Education' as NotionExperienceEntry['kind'],
+          title: entry.degree,
+          organization: entry.institution,
+          startDate: entry.startDate,
+          endDate: entry.endDate,
+          description: entry.description,
+          highlights: [] as string[],
+          href: entry.url,
+        })),
+      ]
+
+  const professionalWork = entries.filter((entry) => entry.kind === 'Work')
+  const technicalTraining = entries.filter((entry) => entry.kind === 'Training')
+  const educationEntries = entries.filter((entry) => entry.kind === 'Education')
+
   return (
     <section className="mx-auto max-w-3xl pb-8 pt-16 sm:pt-24">
       <header className="mb-20 max-w-2xl sm:mb-28">
@@ -127,11 +158,11 @@ export default function ExperiencePage() {
         <div className="divide-y divide-[var(--border)] border-b border-[var(--border)]">
           {professionalWork.map((entry, index) => (
             <TimelineEntry
-              key={entry.id}
+              key={`${entry.kind}-${entry.organization}`}
               index={String(index + 1).padStart(2, '0')}
-              title={entry.role}
-              organization={entry.name}
-              url={entry.url}
+              title={entry.title}
+              organization={entry.organization}
+              url={entry.href}
               startDate={entry.startDate}
               endDate={entry.endDate}
               description={entry.description}
@@ -148,11 +179,11 @@ export default function ExperiencePage() {
         <div className="divide-y divide-[var(--border)] border-b border-[var(--border)]">
           {technicalTraining.map((entry, index) => (
             <TimelineEntry
-              key={entry.id}
+              key={`${entry.kind}-${entry.organization}`}
               index={String(index + 1).padStart(2, '0')}
-              title={entry.role}
-              organization={entry.name}
-              url={entry.url}
+              title={entry.title}
+              organization={entry.organization}
+              url={entry.href}
               startDate={entry.startDate}
               endDate={entry.endDate}
               description={entry.description}
@@ -167,16 +198,17 @@ export default function ExperiencePage() {
           <h2 id="education-title">Education</h2>
         </div>
         <div className="divide-y divide-[var(--border)] border-b border-[var(--border)]">
-          {education.map((entry, index) => (
+          {educationEntries.map((entry, index) => (
             <TimelineEntry
-              key={entry.id}
+              key={`${entry.kind}-${entry.organization}`}
               index={String(index + 1).padStart(2, '0')}
-              title={entry.degree}
-              organization={entry.institution}
-              url={entry.url}
+              title={entry.title}
+              organization={entry.organization}
+              url={entry.href}
               startDate={entry.startDate}
               endDate={entry.endDate}
               description={entry.description}
+              highlights={entry.highlights}
             />
           ))}
         </div>

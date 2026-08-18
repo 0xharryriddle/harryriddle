@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getBlogPosts } from '@/app/blog/utils'
 import { formatDate } from '@/lib/utils'
+import { getBlogPostsFromNotion } from '@/lib/notion'
 
 export const metadata = {
   title: 'Writing',
@@ -8,11 +9,24 @@ export const metadata = {
     'Technical notes on light clients, blockchain infrastructure, and systems built through research.',
 }
 
-export default function BlogPage() {
-  const posts = getBlogPosts().sort(
-    (a, b) =>
-      new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime(),
-  )
+export default async function BlogPage() {
+  const notionPosts = await getBlogPostsFromNotion().catch(() => [])
+  const staticPosts = getBlogPosts()
+
+  const posts =
+    notionPosts.length > 0
+      ? notionPosts
+      : staticPosts.map((post) => ({
+          slug: post.slug,
+          title: post.metadata.title,
+          publishedAt: post.metadata.publishedAt,
+          summary: post.metadata.summary,
+          tags: post.metadata.tags ?? [],
+          image: post.metadata.image,
+          content: post.content,
+        }))
+
+  posts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
 
   return (
     <section className="mx-auto max-w-3xl pb-8 pt-16 sm:pt-24">
@@ -39,25 +53,25 @@ export default function BlogPage() {
             </p>
             <div>
               <h2 className="text-xl font-medium tracking-tight text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent)]">
-                {post.metadata.title} <span aria-hidden="true">→</span>
+                {post.title} <span aria-hidden="true">→</span>
               </h2>
               <p className="mt-3 max-w-2xl leading-7 text-[var(--text-secondary)]">
-                {post.metadata.summary}
+                {post.summary}
               </p>
               <div className="mt-4 font-mono text-xs leading-6 text-[var(--text-muted)]">
-                {post.metadata.tags && post.metadata.tags.length > 0 && (
-                  <span>{post.metadata.tags.join(' · ')}</span>
+                {post.tags && post.tags.length > 0 && (
+                  <span>{post.tags.join(' · ')}</span>
                 )}
                 <span className="sm:hidden">
-                  {post.metadata.tags && post.metadata.tags.length > 0 ? ' · ' : ''}
+                  {post.tags && post.tags.length > 0 ? ' · ' : ''}
                   <time className="tabular-nums">
-                    {formatDate(post.metadata.publishedAt, false)}
+                    {formatDate(post.publishedAt, false)}
                   </time>
                 </span>
               </div>
             </div>
             <time className="hidden font-mono text-xs tabular-nums text-[var(--text-muted)] sm:block sm:text-right">
-              {formatDate(post.metadata.publishedAt, false)}
+              {formatDate(post.publishedAt, false)}
             </time>
           </Link>
         ))}
