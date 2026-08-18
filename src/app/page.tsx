@@ -1,10 +1,15 @@
 import Link from 'next/link'
 import { companies } from '@/data/companies'
-import { competitiveWork } from '@/data/competitiveWork'
 import { education } from '@/data/education'
-import { experiments } from '@/data/experiments'
-import { openSourceWork } from '@/data/openSourceWork'
 import { BlogPosts } from '@/components/posts'
+import {
+  getExperimentsFromNotion,
+  getOpenSourceWorkFromNotion,
+  getCompetitiveWorkFromNotion,
+} from '@/lib/notion'
+import { experiments as staticExperiments } from '@/data/experiments'
+import { openSourceWork as staticOss } from '@/data/openSourceWork'
+import { competitiveWork as staticComp } from '@/data/competitiveWork'
 
 const destinations = [
   { label: 'Research', detail: 'Questions and current work', href: '/research' },
@@ -38,7 +43,18 @@ function formatPeriod(startDate: string, endDate: string | null): string {
   return `${start} — ${end}`
 }
 
-export default function Home() {
+export default async function Home() {
+  // Fetch from Notion with static fallback
+  const [notionExperiments, notionOss, notionComp] = await Promise.all([
+    getExperimentsFromNotion().catch(() => []),
+    getOpenSourceWorkFromNotion().catch(() => []),
+    getCompetitiveWorkFromNotion().catch(() => []),
+  ])
+
+  const experiments = notionExperiments.length > 0 ? notionExperiments : staticExperiments
+  const ossItems = notionOss.length > 0 ? notionOss : staticOss
+  const compItems = notionComp.length > 0 ? notionComp : staticComp
+
   return (
     <section className="pb-10 pt-12 sm:pt-20">
       <div className="grid gap-14 lg:grid-cols-[minmax(0,1.25fr)_minmax(20rem,0.75fr)] lg:gap-24">
@@ -167,7 +183,7 @@ export default function Home() {
               </a>
             </div>
             <div className="mt-9 border-b border-[var(--border)]">
-              {openSourceWork.map((work) => (
+              {ossItems.map((work) => (
                 <a
                   key={work.name}
                   href={work.href}
@@ -200,9 +216,9 @@ export default function Home() {
             <h2 id="competitive-work-title" className="text-2xl font-medium leading-tight tracking-[-0.04em] sm:text-3xl">
               Building under a clock.
             </h2>
-            {competitiveWork.length > 0 ? (
+            {compItems.length > 0 ? (
               <div className="mt-9 border-b border-[var(--border)]">
-                {competitiveWork.map((entry) => (
+                {compItems.map((entry) => (
                   <div key={`${entry.name}-${entry.year}`} className="border-t border-[var(--border)] py-5">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1">
                       {entry.href ? (
